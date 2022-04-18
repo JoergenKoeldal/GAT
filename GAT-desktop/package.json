@@ -1,0 +1,16 @@
+{
+  "name": "gat-desktop",
+  "version": "1.0.0",
+  "description": "Electron desktop app for the GAT application",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "electron": "^18.0.4"
+  }
+}
