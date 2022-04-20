@@ -16,20 +16,12 @@ namespace GATAPI.Models
     {
         public long CleanupId { get; set; }
         public long UserId { get; set; }
-        public bool LocalDisk { get; set; }
-        public int LocalDiskResults { get; set; }
-        public int LocalDiskDeleted { get; set; }
-        public bool Email { get; set; }
-        public int EmailResults { get; set; }
-        public int EmailDeleted { get; set; }
-        public bool Teams { get; set; }
-        public int TeamsResults { get; set; }
-        public int TeamsDeleted { get; set; }
-        public bool Skype { get; set; }
-        public int SkypeResults { get; set; }
-        public int SkypeDeleted { get; set; }
         public System.DateTime Timestamp { get; set; }
+        public long SourceId { get; set; }
+        public int Hits { get; set; }
+        public int Deleted { get; set; }
     
+        public virtual Source Source { get; set; }
         public virtual SystemUser SystemUser { get; set; }
     }
 }

@@ -11,27 +11,10 @@
           </Key>
           <Property Name="CleanupId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
-          <Property Name="LocalDisk" Type="bit" Nullable="false" />
-          <Property Name="LocalDiskResults" Type="int" Nullable="false" />
-          <Property Name="LocalDiskDeleted" Type="int" Nullable="false" />
-          <Property Name="Email" Type="bit" Nullable="false" />
-          <Property Name="EmailResults" Type="int" Nullable="false" />
-          <Property Name="EmailDeleted" Type="int" Nullable="false" />
-          <Property Name="Teams" Type="bit" Nullable="false" />
-          <Property Name="TeamsResults" Type="int" Nullable="false" />
-          <Property Name="TeamsDeleted" Type="int" Nullable="false" />
-          <Property Name="Skype" Type="bit" Nullable="false" />
-          <Property Name="SkypeResults" Type="int" Nullable="false" />
-          <Property Name="SkypeDeleted" Type="int" Nullable="false" />
           <Property Name="Timestamp" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CustomKeyword">
-          <Key>
-            <PropertyRef Name="CustomKeywordId" />
-          </Key>
-          <Property Name="CustomKeywordId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Word" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="SourceId" Type="bigint" Nullable="false" />
+          <Property Name="Hits" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -50,10 +33,32 @@
         <EntityType Name="KeywordList">
           <Key>
             <PropertyRef Name="KeywordListId" />
+          </Key>
+          <Property Name="KeywordListId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="KeywordListHasKeyword">
+          <Key>
+            <PropertyRef Name="KeywordListId" />
             <PropertyRef Name="KeywordId" />
           </Key>
           <Property Name="KeywordListId" Type="bigint" Nullable="false" />
           <Property Name="KeywordId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="ScheduleId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="SourceId" />
+          </Key>
+          <Property Name="SourceId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="SystemUser">
           <Key>
@@ -62,9 +67,29 @@
           <Property Name="UserId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="DepartmentId" Type="bigint" Nullable="false" />
-          <Property Name="LastCleanup" Type="datetime" />
         </EntityType>
-        <Association Name="FK__Cleanup__UserId__6FE99F9F">
+        <EntityType Name="UserFinishedSchedule">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="FinishedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Cleanup__SourceI__10566F31">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="Cleanup" Type="Self.Cleanup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="SourceId" />
+            </Principal>
+            <Dependent Role="Cleanup">
+              <PropertyRef Name="SourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cleanup__UserId__0F624AF8">
           <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="1" />
           <End Role="Cleanup" Type="Self.Cleanup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -76,26 +101,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CustomKey__UserI__6E01572D">
-          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="1" />
-          <End Role="CustomKeyword" Type="Self.CustomKeyword" Multiplicity="*" />
+        <Association Name="FK__KeywordLi__Keywo__114A936A">
+          <End Role="KeywordList" Type="Self.KeywordList" Multiplicity="1" />
+          <End Role="KeywordListHasKeyword" Type="Self.KeywordListHasKeyword" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SystemUser">
-              <PropertyRef Name="UserId" />
+            <Principal Role="KeywordList">
+              <PropertyRef Name="KeywordListId" />
             </Principal>
-            <Dependent Role="CustomKeyword">
-              <PropertyRef Name="UserId" />
+            <Dependent Role="KeywordListHasKeyword">
+              <PropertyRef Name="KeywordListId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KeywordLi__Keywo__6EF57B66">
+        <Association Name="FK__KeywordLi__Keywo__123EB7A3">
           <End Role="Keyword" Type="Self.Keyword" Multiplicity="1" />
-          <End Role="KeywordList" Type="Self.KeywordList" Multiplicity="*" />
+          <End Role="KeywordListHasKeyword" Type="Self.KeywordListHasKeyword" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Keyword">
               <PropertyRef Name="KeywordId" />
             </Principal>
-            <Dependent Role="KeywordList">
+            <Dependent Role="KeywordListHasKeyword">
               <PropertyRef Name="KeywordId" />
             </Dependent>
           </ReferentialConstraint>
@@ -112,28 +137,67 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserFinis__Sched__08B54D69">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="UserFinishedSchedule" Type="Self.UserFinishedSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleId" />
+            </Principal>
+            <Dependent Role="UserFinishedSchedule">
+              <PropertyRef Name="ScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFinis__UserI__07C12930">
+          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="1" />
+          <End Role="UserFinishedSchedule" Type="Self.UserFinishedSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserFinishedSchedule">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Cleanup" EntityType="Self.Cleanup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CustomKeyword" EntityType="Self.CustomKeyword" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Keyword" EntityType="Self.Keyword" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KeywordList" EntityType="Self.KeywordList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KeywordListHasKeyword" EntityType="Self.KeywordListHasKeyword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Source" EntityType="Self.Source" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemUser" EntityType="Self.SystemUser" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Cleanup__UserId__6FE99F9F" Association="Self.FK__Cleanup__UserId__6FE99F9F">
+          <EntitySet Name="UserFinishedSchedule" EntityType="Self.UserFinishedSchedule" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Cleanup__SourceI__10566F31" Association="Self.FK__Cleanup__SourceI__10566F31">
+            <End Role="Source" EntitySet="Source" />
+            <End Role="Cleanup" EntitySet="Cleanup" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cleanup__UserId__0F624AF8" Association="Self.FK__Cleanup__UserId__0F624AF8">
             <End Role="SystemUser" EntitySet="SystemUser" />
             <End Role="Cleanup" EntitySet="Cleanup" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomKey__UserI__6E01572D" Association="Self.FK__CustomKey__UserI__6E01572D">
-            <End Role="SystemUser" EntitySet="SystemUser" />
-            <End Role="CustomKeyword" EntitySet="CustomKeyword" />
-          </AssociationSet>
-          <AssociationSet Name="FK__KeywordLi__Keywo__6EF57B66" Association="Self.FK__KeywordLi__Keywo__6EF57B66">
-            <End Role="Keyword" EntitySet="Keyword" />
+          <AssociationSet Name="FK__KeywordLi__Keywo__114A936A" Association="Self.FK__KeywordLi__Keywo__114A936A">
             <End Role="KeywordList" EntitySet="KeywordList" />
+            <End Role="KeywordListHasKeyword" EntitySet="KeywordListHasKeyword" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KeywordLi__Keywo__123EB7A3" Association="Self.FK__KeywordLi__Keywo__123EB7A3">
+            <End Role="Keyword" EntitySet="Keyword" />
+            <End Role="KeywordListHasKeyword" EntitySet="KeywordListHasKeyword" />
           </AssociationSet>
           <AssociationSet Name="FK__User__Department__6D0D32F4" Association="Self.FK__User__Department__6D0D32F4">
             <End Role="Department" EntitySet="Department" />
             <End Role="SystemUser" EntitySet="SystemUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFinis__Sched__08B54D69" Association="Self.FK__UserFinis__Sched__08B54D69">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="UserFinishedSchedule" EntitySet="UserFinishedSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFinis__UserI__07C12930" Association="Self.FK__UserFinis__UserI__07C12930">
+            <End Role="SystemUser" EntitySet="SystemUser" />
+            <End Role="UserFinishedSchedule" EntitySet="UserFinishedSchedule" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -141,58 +205,72 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="GatEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Cleanup" EntityType="Model.Cleanup" />
-          <EntitySet Name="CustomKeyword" EntityType="Model.CustomKeyword" />
-          <EntitySet Name="Department" EntityType="Model.Department" />
           <EntitySet Name="Keyword" EntityType="Model.Keyword" />
           <EntitySet Name="KeywordList" EntityType="Model.KeywordList" />
+          <AssociationSet Name="KeywordListHasKeyword" Association="Model.KeywordListHasKeyword">
+            <End Role="KeywordList" EntitySet="KeywordList" />
+            <End Role="Keyword" EntitySet="Keyword" />
+          </AssociationSet>
+          <EntitySet Name="Cleanup" EntityType="Model.Cleanup" />
+          <EntitySet Name="Department" EntityType="Model.Department" />
+          <EntitySet Name="Schedule" EntityType="Model.Schedule" />
+          <EntitySet Name="Source" EntityType="Model.Source" />
           <EntitySet Name="SystemUser" EntityType="Model.SystemUser" />
-          <AssociationSet Name="FK__Cleanup__UserId__6FE99F9F" Association="Model.FK__Cleanup__UserId__6FE99F9F">
-            <End Role="SystemUser" EntitySet="SystemUser" />
+          <EntitySet Name="UserFinishedSchedule" EntityType="Model.UserFinishedSchedule" />
+          <AssociationSet Name="FK__Cleanup__SourceI__10566F31" Association="Model.FK__Cleanup__SourceI__10566F31">
+            <End Role="Source" EntitySet="Source" />
             <End Role="Cleanup" EntitySet="Cleanup" />
           </AssociationSet>
-          <AssociationSet Name="FK__CustomKey__UserI__6E01572D" Association="Model.FK__CustomKey__UserI__6E01572D">
+          <AssociationSet Name="FK__Cleanup__UserId__0F624AF8" Association="Model.FK__Cleanup__UserId__0F624AF8">
             <End Role="SystemUser" EntitySet="SystemUser" />
-            <End Role="CustomKeyword" EntitySet="CustomKeyword" />
+            <End Role="Cleanup" EntitySet="Cleanup" />
           </AssociationSet>
           <AssociationSet Name="FK__User__Department__6D0D32F4" Association="Model.FK__User__Department__6D0D32F4">
             <End Role="Department" EntitySet="Department" />
             <End Role="SystemUser" EntitySet="SystemUser" />
           </AssociationSet>
-          <AssociationSet Name="FK__KeywordLi__Keywo__6EF57B66" Association="Model.FK__KeywordLi__Keywo__6EF57B66">
-            <End Role="Keyword" EntitySet="Keyword" />
-            <End Role="KeywordList" EntitySet="KeywordList" />
+          <AssociationSet Name="FK__UserFinis__Sched__08B54D69" Association="Model.FK__UserFinis__Sched__08B54D69">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="UserFinishedSchedule" EntitySet="UserFinishedSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserFinis__UserI__07C12930" Association="Model.FK__UserFinis__UserI__07C12930">
+            <End Role="SystemUser" EntitySet="SystemUser" />
+            <End Role="UserFinishedSchedule" EntitySet="UserFinishedSchedule" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Keyword">
+          <Key>
+            <PropertyRef Name="KeywordId" />
+          </Key>
+          <Property Name="KeywordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Word" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KeywordList" Relationship="Model.KeywordListHasKeyword" FromRole="Keyword" ToRole="KeywordList" />
+        </EntityType>
+        <EntityType Name="KeywordList">
+          <Key>
+            <PropertyRef Name="KeywordListId" />
+          </Key>
+          <Property Name="KeywordListId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int64" />
+          <NavigationProperty Name="Keyword" Relationship="Model.KeywordListHasKeyword" FromRole="KeywordList" ToRole="Keyword" />
+        </EntityType>
+        <Association Name="KeywordListHasKeyword">
+          <End Type="Model.KeywordList" Role="KeywordList" Multiplicity="*" />
+          <End Type="Model.Keyword" Role="Keyword" Multiplicity="*" />
+        </Association>
         <EntityType Name="Cleanup">
           <Key>
             <PropertyRef Name="CleanupId" />
           </Key>
           <Property Name="CleanupId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="LocalDisk" Type="Boolean" Nullable="false" />
-          <Property Name="LocalDiskResults" Type="Int32" Nullable="false" />
-          <Property Name="LocalDiskDeleted" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="Boolean" Nullable="false" />
-          <Property Name="EmailResults" Type="Int32" Nullable="false" />
-          <Property Name="EmailDeleted" Type="Int32" Nullable="false" />
-          <Property Name="Teams" Type="Boolean" Nullable="false" />
-          <Property Name="TeamsResults" Type="Int32" Nullable="false" />
-          <Property Name="TeamsDeleted" Type="Int32" Nullable="false" />
-          <Property Name="Skype" Type="Boolean" Nullable="false" />
-          <Property Name="SkypeResults" Type="Int32" Nullable="false" />
-          <Property Name="SkypeDeleted" Type="Int32" Nullable="false" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="SystemUser" Relationship="Model.FK__Cleanup__UserId__6FE99F9F" FromRole="Cleanup" ToRole="SystemUser" />
-        </EntityType>
-        <EntityType Name="CustomKeyword">
-          <Key>
-            <PropertyRef Name="CustomKeywordId" />
-          </Key>
-          <Property Name="CustomKeywordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Word" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="SystemUser" Relationship="Model.FK__CustomKey__UserI__6E01572D" FromRole="CustomKeyword" ToRole="SystemUser" />
+          <Property Name="SourceId" Type="Int64" Nullable="false" />
+          <Property Name="Hits" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Source" Relationship="Model.FK__Cleanup__SourceI__10566F31" FromRole="Cleanup" ToRole="Source" />
+          <NavigationProperty Name="SystemUser" Relationship="Model.FK__Cleanup__UserId__0F624AF8" FromRole="Cleanup" ToRole="SystemUser" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -202,22 +280,21 @@
           <Property Name="DepartmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SystemUser" Relationship="Model.FK__User__Department__6D0D32F4" FromRole="Department" ToRole="SystemUser" />
         </EntityType>
-        <EntityType Name="Keyword">
+        <EntityType Name="Schedule">
           <Key>
-            <PropertyRef Name="KeywordId" />
+            <PropertyRef Name="ScheduleId" />
           </Key>
-          <Property Name="KeywordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Word" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="KeywordList" Relationship="Model.FK__KeywordLi__Keywo__6EF57B66" FromRole="Keyword" ToRole="KeywordList" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="UserFinishedSchedule" Relationship="Model.FK__UserFinis__Sched__08B54D69" FromRole="Schedule" ToRole="UserFinishedSchedule" />
         </EntityType>
-        <EntityType Name="KeywordList">
+        <EntityType Name="Source">
           <Key>
-            <PropertyRef Name="KeywordListId" />
-            <PropertyRef Name="KeywordId" />
+            <PropertyRef Name="SourceId" />
           </Key>
-          <Property Name="KeywordListId" Type="Int64" Nullable="false" />
-          <Property Name="KeywordId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Keyword" Relationship="Model.FK__KeywordLi__Keywo__6EF57B66" FromRole="KeywordList" ToRole="Keyword" />
+          <Property Name="SourceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cleanup" Relationship="Model.FK__Cleanup__SourceI__10566F31" FromRole="Source" ToRole="Cleanup" />
         </EntityType>
         <EntityType Name="SystemUser">
           <Key>
@@ -226,12 +303,34 @@
           <Property Name="UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DepartmentId" Type="Int64" Nullable="false" />
-          <Property Name="LastCleanup" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Cleanup" Relationship="Model.FK__Cleanup__UserId__6FE99F9F" FromRole="SystemUser" ToRole="Cleanup" />
-          <NavigationProperty Name="CustomKeyword" Relationship="Model.FK__CustomKey__UserI__6E01572D" FromRole="SystemUser" ToRole="CustomKeyword" />
+          <NavigationProperty Name="Cleanup" Relationship="Model.FK__Cleanup__UserId__0F624AF8" FromRole="SystemUser" ToRole="Cleanup" />
           <NavigationProperty Name="Department" Relationship="Model.FK__User__Department__6D0D32F4" FromRole="SystemUser" ToRole="Department" />
+          <NavigationProperty Name="UserFinishedSchedule" Relationship="Model.FK__UserFinis__UserI__07C12930" FromRole="SystemUser" ToRole="UserFinishedSchedule" />
         </EntityType>
-        <Association Name="FK__Cleanup__UserId__6FE99F9F">
+        <EntityType Name="UserFinishedSchedule">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="FinishedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Schedule" Relationship="Model.FK__UserFinis__Sched__08B54D69" FromRole="UserFinishedSchedule" ToRole="Schedule" />
+          <NavigationProperty Name="SystemUser" Relationship="Model.FK__UserFinis__UserI__07C12930" FromRole="UserFinishedSchedule" ToRole="SystemUser" />
+        </EntityType>
+        <Association Name="FK__Cleanup__SourceI__10566F31">
+          <End Type="Model.Source" Role="Source" Multiplicity="1" />
+          <End Type="Model.Cleanup" Role="Cleanup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="SourceId" />
+            </Principal>
+            <Dependent Role="Cleanup">
+              <PropertyRef Name="SourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cleanup__UserId__0F624AF8">
           <End Type="Model.SystemUser" Role="SystemUser" Multiplicity="1" />
           <End Type="Model.Cleanup" Role="Cleanup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -239,18 +338,6 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Cleanup">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CustomKey__UserI__6E01572D">
-          <End Type="Model.SystemUser" Role="SystemUser" Multiplicity="1" />
-          <End Type="Model.CustomKeyword" Role="CustomKeyword" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SystemUser">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="CustomKeyword">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -267,15 +354,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KeywordLi__Keywo__6EF57B66">
-          <End Type="Model.Keyword" Role="Keyword" Multiplicity="1" />
-          <End Type="Model.KeywordList" Role="KeywordList" Multiplicity="*" />
+        <Association Name="FK__UserFinis__Sched__08B54D69">
+          <End Type="Model.Schedule" Role="Schedule" Multiplicity="1" />
+          <End Type="Model.UserFinishedSchedule" Role="UserFinishedSchedule" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Keyword">
-              <PropertyRef Name="KeywordId" />
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleId" />
             </Principal>
-            <Dependent Role="KeywordList">
-              <PropertyRef Name="KeywordId" />
+            <Dependent Role="UserFinishedSchedule">
+              <PropertyRef Name="ScheduleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserFinis__UserI__07C12930">
+          <End Type="Model.SystemUser" Role="SystemUser" Multiplicity="1" />
+          <End Type="Model.UserFinishedSchedule" Role="UserFinishedSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserFinishedSchedule">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -285,44 +384,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="GatEntities">
-          <EntitySetMapping Name="Cleanup">
-            <EntityTypeMapping TypeName="Model.Cleanup">
-              <MappingFragment StoreEntitySet="Cleanup">
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="SkypeDeleted" ColumnName="SkypeDeleted" />
-                <ScalarProperty Name="SkypeResults" ColumnName="SkypeResults" />
-                <ScalarProperty Name="Skype" ColumnName="Skype" />
-                <ScalarProperty Name="TeamsDeleted" ColumnName="TeamsDeleted" />
-                <ScalarProperty Name="TeamsResults" ColumnName="TeamsResults" />
-                <ScalarProperty Name="Teams" ColumnName="Teams" />
-                <ScalarProperty Name="EmailDeleted" ColumnName="EmailDeleted" />
-                <ScalarProperty Name="EmailResults" ColumnName="EmailResults" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LocalDiskDeleted" ColumnName="LocalDiskDeleted" />
-                <ScalarProperty Name="LocalDiskResults" ColumnName="LocalDiskResults" />
-                <ScalarProperty Name="LocalDisk" ColumnName="LocalDisk" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CleanupId" ColumnName="CleanupId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CustomKeyword">
-            <EntityTypeMapping TypeName="Model.CustomKeyword">
-              <MappingFragment StoreEntitySet="CustomKeyword">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Word" ColumnName="Word" />
-                <ScalarProperty Name="CustomKeywordId" ColumnName="CustomKeywordId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Department">
-            <EntityTypeMapping TypeName="Model.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Keyword">
             <EntityTypeMapping TypeName="Model.Keyword">
               <MappingFragment StoreEntitySet="Keyword">
@@ -334,17 +395,70 @@
           <EntitySetMapping Name="KeywordList">
             <EntityTypeMapping TypeName="Model.KeywordList">
               <MappingFragment StoreEntitySet="KeywordList">
-                <ScalarProperty Name="KeywordId" ColumnName="KeywordId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="KeywordListId" ColumnName="KeywordListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="KeywordListHasKeyword" TypeName="Model.KeywordListHasKeyword" StoreEntitySet="KeywordListHasKeyword">
+            <EndProperty Name="Keyword">
+              <ScalarProperty Name="KeywordId" ColumnName="KeywordId" />
+            </EndProperty>
+            <EndProperty Name="KeywordList">
+              <ScalarProperty Name="KeywordListId" ColumnName="KeywordListId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Cleanup">
+            <EntityTypeMapping TypeName="Model.Cleanup">
+              <MappingFragment StoreEntitySet="Cleanup">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Hits" ColumnName="Hits" />
+                <ScalarProperty Name="SourceId" ColumnName="SourceId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CleanupId" ColumnName="CleanupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Department">
+            <EntityTypeMapping TypeName="Model.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedule">
+            <EntityTypeMapping TypeName="Model.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Source">
+            <EntityTypeMapping TypeName="Model.Source">
+              <MappingFragment StoreEntitySet="Source">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SourceId" ColumnName="SourceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SystemUser">
             <EntityTypeMapping TypeName="Model.SystemUser">
               <MappingFragment StoreEntitySet="SystemUser">
-                <ScalarProperty Name="LastCleanup" ColumnName="LastCleanup" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserFinishedSchedule">
+            <EntityTypeMapping TypeName="Model.UserFinishedSchedule">
+              <MappingFragment StoreEntitySet="UserFinishedSchedule">
+                <ScalarProperty Name="FinishedAt" ColumnName="FinishedAt" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>

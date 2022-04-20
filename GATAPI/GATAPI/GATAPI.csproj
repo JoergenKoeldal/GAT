@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -168,9 +168,6 @@
     <Compile Include="Models\Cleanup.cs">
       <DependentUpon>GatDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CustomKeyword.cs">
-      <DependentUpon>GatDb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Department.cs">
       <DependentUpon>GatDb.tt</DependentUpon>
     </Compile>
@@ -198,7 +195,16 @@
     <Compile Include="Models\KeywordList.cs">
       <DependentUpon>GatDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Schedule.cs">
+      <DependentUpon>GatDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Source.cs">
+      <DependentUpon>GatDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SystemUser.cs">
+      <DependentUpon>GatDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserFinishedSchedule.cs">
       <DependentUpon>GatDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

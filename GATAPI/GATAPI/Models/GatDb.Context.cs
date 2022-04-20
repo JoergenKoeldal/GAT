@@ -25,11 +25,13 @@ namespace GATAPI.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Cleanup> Cleanup { get; set; }
-        public virtual DbSet<CustomKeyword> CustomKeyword { get; set; }
-        public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Keyword> Keyword { get; set; }
         public virtual DbSet<KeywordList> KeywordList { get; set; }
+        public virtual DbSet<Cleanup> Cleanup { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<Schedule> Schedule { get; set; }
+        public virtual DbSet<Source> Source { get; set; }
         public virtual DbSet<SystemUser> SystemUser { get; set; }
+        public virtual DbSet<UserFinishedSchedule> UserFinishedSchedule { get; set; }
     }
 }

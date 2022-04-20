@@ -14,9 +14,17 @@ namespace GATAPI.Models
     
     public partial class KeywordList
     {
-        public long KeywordListId { get; set; }
-        public long KeywordId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public KeywordList()
+        {
+            this.Keyword = new HashSet<Keyword>();
+        }
     
-        public virtual Keyword Keyword { get; set; }
+        public long KeywordListId { get; set; }
+        public string Name { get; set; }
+        public Nullable<long> UserId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Keyword> Keyword { get; set; }
     }
 }

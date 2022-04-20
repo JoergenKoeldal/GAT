@@ -12,12 +12,13 @@ namespace GATAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CustomKeyword
+    public partial class UserFinishedSchedule
     {
-        public long CustomKeywordId { get; set; }
-        public string Word { get; set; }
         public long UserId { get; set; }
+        public long ScheduleId { get; set; }
+        public System.DateTime FinishedAt { get; set; }
     
+        public virtual Schedule Schedule { get; set; }
         public virtual SystemUser SystemUser { get; set; }
     }
 }

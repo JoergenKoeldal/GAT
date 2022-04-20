@@ -12,22 +12,17 @@ namespace GATAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemUser
+    public partial class Schedule
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SystemUser()
+        public Schedule()
         {
-            this.Cleanup = new HashSet<Cleanup>();
             this.UserFinishedSchedule = new HashSet<UserFinishedSchedule>();
         }
     
-        public long UserId { get; set; }
-        public string Email { get; set; }
-        public long DepartmentId { get; set; }
+        public long ScheduleId { get; set; }
+        public System.DateTime Date { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cleanup> Cleanup { get; set; }
-        public virtual Department Department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserFinishedSchedule> UserFinishedSchedule { get; set; }
     }
