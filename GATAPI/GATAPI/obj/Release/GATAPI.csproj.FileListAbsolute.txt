@@ -82,3 +82,8 @@ C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\obj\Release\GATAPI.csp
 C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\obj\Release\GATAPI.csproj.CopyComplete
 C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\obj\Release\GATAPI.dll
 C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\obj\Release\GATAPI.pdb
+C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\obj\Release\GATAPI.csproj.AssemblyReference.cache
+C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\bin\EntityFramework.dll
+C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\bin\EntityFramework.SqlServer.dll
+C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\bin\EntityFramework.xml
+C:\Users\jbvk9\Documents\Datamatiker\Jndata\GATAPI\GATAPI\bin\EntityFramework.SqlServer.xml

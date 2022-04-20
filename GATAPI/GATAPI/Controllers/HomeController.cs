@@ -11,7 +11,7 @@ namespace GATAPI.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-            user
+            
             return View();
         }
     }
