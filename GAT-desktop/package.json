@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "desktop": "electron .",
     "web": "webpack serve",
-    "build-dev": "webpack"
+    "build-dev": "webpack",
+    "lint": "eslint ./src",
+    "lint-fix": "eslint ./src --fix"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +21,7 @@
     "babel-loader": "^8.2.5",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^6.7.1",
-    "electron": "^18.0.4",
+    "eslint-plugin-react": "^7.29.4",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.0",
@@ -27,6 +29,11 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
+    "electron": "^18.0.4",
+    "eslint": "^8.4.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-react": "^7.29.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
