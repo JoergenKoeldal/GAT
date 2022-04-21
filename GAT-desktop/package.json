@@ -5,8 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "desk": "electron .",
-    "web": "webpack serve"
+    "desktop": "electron .",
+    "web": "webpack serve",
+    "build-dev": "webpack"
   },
   "author": "",
   "license": "ISC",
