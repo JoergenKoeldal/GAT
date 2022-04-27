@@ -11,6 +11,9 @@ module.exports = {
     node: {
         global: false
     },
+    devServer: {
+        historyApiFallback: true
+    },
     module: {
         rules: [{
             test: /\.js$/,
