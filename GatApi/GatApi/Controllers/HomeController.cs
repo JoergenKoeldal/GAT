@@ -6,6 +6,7 @@ namespace GatApi.Controllers
     {
         public IActionResult Index()
         {
+            //Det her virker
             return View();
         }
     }
