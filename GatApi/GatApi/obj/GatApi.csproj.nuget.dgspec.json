@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Phillip\\source\\repos\\GatApi\\GatApi\\GatApi.csproj": {}
+    "C:\\Datamatiker\\Hovedopgave\\GAT\\GatApi\\GatApi\\GatApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Phillip\\source\\repos\\GatApi\\GatApi\\GatApi.csproj": {
+    "C:\\Datamatiker\\Hovedopgave\\GAT\\GatApi\\GatApi\\GatApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Phillip\\source\\repos\\GatApi\\GatApi\\GatApi.csproj",
+        "projectUniqueName": "C:\\Datamatiker\\Hovedopgave\\GAT\\GatApi\\GatApi\\GatApi.csproj",
         "projectName": "GatApi",
-        "projectPath": "C:\\Users\\Phillip\\source\\repos\\GatApi\\GatApi\\GatApi.csproj",
+        "projectPath": "C:\\Datamatiker\\Hovedopgave\\GAT\\GatApi\\GatApi\\GatApi.csproj",
         "packagesPath": "C:\\Users\\Phillip\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Phillip\\source\\repos\\GatApi\\GatApi\\obj\\",
+        "outputPath": "C:\\Datamatiker\\Hovedopgave\\GAT\\GatApi\\GatApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Phillip\\AppData\\Roaming\\NuGet\\NuGet.Config",
