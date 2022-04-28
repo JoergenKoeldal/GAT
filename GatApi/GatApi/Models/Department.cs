@@ -8,7 +8,7 @@ namespace GatApi.Models
         public long DepartmentId { get; set; }
 
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
 
     }
 }
