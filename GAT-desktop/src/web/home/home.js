@@ -1,9 +1,9 @@
 import React from "react";
-import Button from "../utill/button"
+import Button from "../utill/button";
 
 export default function Home() {
     return (
-      <div>
+        <div>
 
             <h1>Home page</h1>
 
