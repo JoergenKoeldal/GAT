@@ -7,7 +7,7 @@ export default function Home() {
 
             <h1>Home page</h1>
 
-            <Button onClick={() => location.href = "/login"} text="Noget sejt">  </Button>
+            <Button onClick={() => { window.location.href = "/login"; }}>  </Button>
 
             <p> hej </p>
 

@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: 'development',
-    entry: path.join(__dirname, "src", "web", "index.js"),
+    entry: path.join(__dirname, "src", "web", "index.jsx"),
     output: { 
         path: path.join(__dirname, "dist") 
     },
@@ -18,7 +18,7 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.js$/,
+            test: /\.(js|jsx)$/,
             include: path.resolve(__dirname, "src/web"),
             exclude: /node_modules/,
             use: {
@@ -37,6 +37,9 @@ module.exports = {
                 "postcss-loader",
             ]
         }]
+    },
+    resolve: {
+        extensions: ["", ".js", ".jsx"],
     },
     plugins: [
         new MiniCssExtractPlugin({ // Extracts css to the file ./dist/style.css

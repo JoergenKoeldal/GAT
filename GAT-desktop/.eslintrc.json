@@ -5,6 +5,11 @@
         "es2021": true,
         "node": true
     },
+    "overrides": [
+        {
+            "files": ["*.jsx", "*.js"]
+        }
+    ],
     "extends": [
         "airbnb"
     ],
