@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GatApi.Data;
 using GatApi.Models;
+using GatApi.ViewModels;
 
 namespace GatApi.Controllers
 {
@@ -23,25 +24,48 @@ namespace GatApi.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetUser()
         {
-            var userList = await _context.User.Include(user => user.UserFinishedSchedules).ThenInclude(userFinishedSchedule => userFinishedSchedule.Schedule).ToListAsync();
-            return userList;
+            Schedule CurrentSchedule = _context.Schedule.OrderByDescending(dt => dt.Date).FirstOrDefault();
+            List<User> userList = await _context.User.Include(user => user.Department).Include(user => user.UserFinishedSchedules).ThenInclude(userFinishedSchedule => userFinishedSchedule.Schedule).ToListAsync();
+            List<UserViewModel> userViewModels = new List<UserViewModel>();
+
+            foreach(User user in userList)
+            {
+                UserViewModel userViewModel = new UserViewModel();
+                userViewModel.DepartmentName = user.Department.Name;
+                userViewModel.Name = user.Name;
+                userViewModel.Email = user.Email;
+                if(user.UserFinishedSchedules.Count > 0)
+                {
+                    foreach (UserFinishedSchedule ufs in user.UserFinishedSchedules)
+                    {
+                        if(ufs.ScheduleId == CurrentSchedule.ScheduleId)
+                        {
+                            userViewModel.IsScheduleFinished = true;
+                        }
+                    }
+                }
+                userViewModels.Add(userViewModel);
+
+            }
+
+            return userViewModels;
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
-        {
-            var user = await _context.User.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<User>> GetUser(long id)
+        //{
+        //    var user = await _context.User.FindAsync(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return user;
-        }
+        //    return user;
+        //}
 
     }
 }
