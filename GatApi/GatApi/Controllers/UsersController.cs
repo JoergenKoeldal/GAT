@@ -24,33 +24,65 @@ namespace GatApi.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetUser()
+        public async Task<ActionResult<IEnumerable<PdfViewModel>>> GetUser()
         {
             Schedule CurrentSchedule = _context.Schedule.OrderByDescending(dt => dt.Date).FirstOrDefault();
             List<User> userList = await _context.User.Include(user => user.Department).Include(user => user.UserFinishedSchedules).ThenInclude(userFinishedSchedule => userFinishedSchedule.Schedule).ToListAsync();
-            List<UserViewModel> userViewModels = new List<UserViewModel>();
+            List<PdfViewModel> userViewModels = new List<PdfViewModel>();
 
             foreach(User user in userList)
             {
-                UserViewModel userViewModel = new UserViewModel();
-                userViewModel.DepartmentName = user.Department.Name;
-                userViewModel.Name = user.Name;
-                userViewModel.Email = user.Email;
+                PdfViewModel pdfViewModel = new PdfViewModel();
+                pdfViewModel.DepartmentName = user.Department.Name;
+                pdfViewModel.Name = user.Name;
                 if(user.UserFinishedSchedules.Count > 0)
                 {
                     foreach (UserFinishedSchedule ufs in user.UserFinishedSchedules)
                     {
                         if(ufs.ScheduleId == CurrentSchedule.ScheduleId)
                         {
-                            userViewModel.IsScheduleFinished = true;
+                            pdfViewModel.IsScheduleFinished = "X";
                         }
                     }
                 }
-                userViewModels.Add(userViewModel);
+                userViewModels.Add(pdfViewModel);
 
             }
 
             return userViewModels;
+        }
+        [HttpGet]
+        [Route("pdf")]
+        public async Task<ActionResult<string>> CreatePdf()
+        {
+
+            Schedule CurrentSchedule = _context.Schedule.OrderByDescending(dt => dt.Date).FirstOrDefault();
+            List<User> userList = await _context.User.Include(user => user.Department).Include(user => user.UserFinishedSchedules).ThenInclude(userFinishedSchedule => userFinishedSchedule.Schedule).ToListAsync();
+            List<PdfViewModel> pdfViewModels = new List<PdfViewModel>();
+
+            foreach (User user in userList)
+            {
+                PdfViewModel pdfViewModel = new PdfViewModel();
+                pdfViewModel.DepartmentName = user.Department.Name;
+                pdfViewModel.Name = user.Name;
+                if (user.UserFinishedSchedules.Count > 0)
+                {
+                    foreach (UserFinishedSchedule ufs in user.UserFinishedSchedules)
+                    {
+                        if (ufs.ScheduleId == CurrentSchedule.ScheduleId)
+                        {
+                            pdfViewModel.IsScheduleFinished = "X";
+                            pdfViewModel.ScheduleFinishedAt = ufs.FinishedAt.ToString("dd-MM-yyyy");
+                        }
+                    }
+                }
+                pdfViewModels.Add(pdfViewModel);
+
+            }
+
+
+            Util.Util.GeneratePdf(pdfViewModels, CurrentSchedule.Date);
+            return "PDF file generated!";
         }
 
         // GET: api/Users/5
