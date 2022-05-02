@@ -1,37 +1,46 @@
 import ReactDOM from "react-dom/client";
 import React from "react";
+
 import {
-    BrowserRouter,
-    Routes,
-    Route,
-} from "react-router-dom";
+    PublicClientApplication,
+    EventType
+} from '@azure/msal-browser';
+
+import config from './config';
+import App from "./app";
+
 import "./assets/style.css"; // import css, required by tailwindcss
 
-import App from "./app";
-import Home from "./home/home";
-import Login from "./login/login";
-import Statistics from "./statistics/statistics";
+const msalInstance = new PublicClientApplication({
+    auth: {
+        clientId: config.clientId,
+        redirectUri: config.redirectUri
+    },
+    cache: {
+        cacheLocation: "sessionStorage",
+        storeAuthStateInCookie: true
+    }
+});
+
+// Check if there are already accounts in the browser session
+// If so, set the first account as the active account
+const accounts = msalInstance.getAllAccounts();
+if (accounts && accounts.length > 0) {
+    msalInstance.setActiveAccount(accounts[0]);
+}
+
+msalInstance.addEventCallback((event) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+        // Set the active account - this simplifies token acquisition
+        const authResult = event.payload;
+        msalInstance.setActiveAccount(authResult.account);
+    }
+});
 
 const container = document.getElementById("app");
 
 const root = ReactDOM.createRoot(container);
 
 root.render(
-    <BrowserRouter>
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<App />}>
-                <Route path="/home" element={<Home />} />
-                <Route path="/statistics" element={<Statistics />} />
-                <Route
-                    path="*"
-                    element={(
-                        <main style={{ padding: "1rem" }}>
-                            <p>There&apos;s nothing here!</p>
-                        </main>
-                    )}
-                />
-            </Route>
-        </Routes>
-    </BrowserRouter>,
+    <App pca = { msalInstance }/>
 );
