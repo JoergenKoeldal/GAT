@@ -22,13 +22,13 @@ namespace GatApi.Util
             PdfWriter writer = new PdfWriter("NewPdfTest.pdf");
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
-            Paragraph header = new Paragraph("GDPR: " + currentScheduleDate.ToString("dd-MM-yyyy"))
+            Paragraph header = new Paragraph("GDPR for: " + currentScheduleDate.ToString("dd-MM-yyyy"))
                .SetTextAlignment(TextAlignment.CENTER)
                .SetFontSize(20);
 
             document.Add(header);
 
-            Paragraph subheader = new Paragraph(pdfViewModels[0].DepartmentName)
+            Paragraph subheader = new Paragraph("Department of " + pdfViewModels[0].DepartmentName)
                                   .SetTextAlignment(TextAlignment.CENTER)
                                   .SetFontSize(15);
             document.Add(subheader);

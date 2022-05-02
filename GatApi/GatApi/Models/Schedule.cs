@@ -9,7 +9,10 @@ namespace GatApi.Models
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTime EndDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
 
         public IList<UserFinishedSchedule> UserFinishedSchedules { get; set; }
 
