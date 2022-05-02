@@ -117,7 +117,6 @@ namespace GatApi.Util
                                 .Add(new Paragraph(pvm.ScheduleFinishedAt));                               
                     table.AddCell(completedDateCell);
                 }
-
                 return table;
             }
 
@@ -133,6 +132,7 @@ namespace GatApi.Util
             EmailMessage email = new EmailMessage(service);
             email.ToRecipients.Add("phillip.glimoe@hotmail.com");
             email.Subject = "HelloWorld";
+            email.Attachments.AddFileAttachment("NewPdfTest.pdf");
             email.Body = new MessageBody("This is the first email I've sent by using the EWS Managed API");
             email.Send();
         }
