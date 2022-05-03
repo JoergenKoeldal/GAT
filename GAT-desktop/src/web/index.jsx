@@ -41,6 +41,7 @@ const container = document.getElementById("app");
 
 const root = ReactDOM.createRoot(container);
 
+console.log("instalnce index.js", msalInstance);
 root.render(
     <App pca = { msalInstance }/>
 );

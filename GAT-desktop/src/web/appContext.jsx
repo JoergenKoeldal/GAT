@@ -11,72 +11,46 @@ import React, {
 import config from "./config";
 import { getUser } from "./graphService.js";
 
-const appContext = createContext({
-  user: undefined,
-  error: undefined,
-  signIn: undefined,
-  signOut: undefined,
-  displayError: undefined,
-  clearError: undefined,
-  authProvider: undefined
-});
+const appContext = createContext();
 
 export function useAppContext(){
     return useContext(appContext);
 }
 
-function useProvideAppContext() {
-    const msal = useMsal();
+export default function ProvideAppContext({children}){
+    const { instance, accounts, inProgress } = useMsal();
 
     const [user, setUser] = useState(undefined);
     const [error, setError] = useState(undefined);
 
-    const displayError = (message, debug) => {
-        setError({message, debug});
-    }
-
-    const clearError = () => {
-        setError(undefined);
-    }
-
-    // Used by the Graph SDK to authenticate API calls
+    // // Used by the Graph SDK to authenticate API calls
     const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
-        msal.instance,
+        instance,
         {
-            account: msal.instance.getActiveAccount(),
+            account: instance.getActiveAccount(),
             scopes: config.scopes,
             interactionType: InteractionType.Popup
         }
     );
 
-    const signIn = async () => {
-        const result = await msal.instance.loginPopup({
-            scopes: config.scopes,
-            prompt: 'select_account'
-        });
-        const user = await getUser(authProvider)
-        setUser({
-            displayName: user.displayName || '',
-            email: user.mail || user.userPrincipalName || '',
-            timeFormat: user.mailboxSettings?.timeFormat || '',
-            timeZone: user.mailboxSettings?.timeZone || 'UTC'
-        })
-    };
-
-    const signOut = async () => {
-        await msal.instance.loginPopup();
-        setUser(undefined);
-    };
+    console.log("HERER");
 
     useEffect(() => {
         const checkUser = async() => {
-            if (!user) {
+            // console.log("user before", user);
+            if(inProgress === InteractionType.None && accounts.length > 0){
+                if(user){
+                    return;
+                }
+                console.log("user", user);
                 try {
                     // Check if user is already signed in
-                    const account = msal.instance.getActiveAccount();
+                    const account = instance.getActiveAccount();
+                    console.log("ACC", account);
                     if (account) {
-                    // Get the user from Microsoft Graph
+                    // // Get the user from Microsoft Graph
                         const user = await getUser(authProvider);
+                        console.log("user after", user);
 
                         setUser({
                             displayName: user.displayName || '',
@@ -91,21 +65,46 @@ function useProvideAppContext() {
             }
         };
         checkUser();
-    })
+    }, [inProgress, accounts, instance, user])
 
-    return {
+    const displayError = (message, debug) => {
+        setError({message, debug});
+    }
+
+    const clearError = () => {
+        setError(undefined);
+    }
+
+
+    const signIn = async () => {
+        await instance.loginPopup({
+            scopes: config.scopes,
+            prompt: 'select_account'
+        });
+        const user = await getUser(authProvider)
+        setUser({
+            displayName: user.displayName || '',
+            email: user.mail || user.userPrincipalName || '',
+            timeFormat: user.mailboxSettings?.timeFormat || '',
+            timeZone: user.mailboxSettings?.timeZone || 'UTC'
+        })
+    };
+
+    const signOut = async () => {
+        await instance.loginPopup();
+        setUser(undefined);
+    };
+
+    const auth = {
         user,
         error,
         signIn,
         signOut,
         displayError,
         clearError,
-        authProvider
+        // authProvider
     };
-}
-
-export default function ProvideAppContext({children}){
-    const auth = useProvideAppContext();
+    
     return (
         <appContext.Provider value={auth}>
             {children}

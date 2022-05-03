@@ -8,7 +8,7 @@ import Button from "./util/button";
 
 export default function Navbar() {
     const appContext = useAppContext();
-    const user = app.user || {displayName: "", email: "",};
+    const user = appContext.user || {displayName: "", email: "",};
 
     return (
         <div>
@@ -33,6 +33,7 @@ export default function Navbar() {
                     <Button onClick={appContext.signIn}>
                         Log ind
                     </Button>
+                    <Outlet />
                 </UnauthenticatedTemplate>
             </div>
         </div>
