@@ -3,10 +3,10 @@ import React from "react";
 
 import {
     PublicClientApplication,
-    EventType
-} from '@azure/msal-browser';
+    EventType,
+} from "@azure/msal-browser";
 
-import config from './config';
+import config from "./config";
 import App from "./app";
 
 import "./assets/style.css"; // import css, required by tailwindcss
@@ -14,12 +14,12 @@ import "./assets/style.css"; // import css, required by tailwindcss
 const msalInstance = new PublicClientApplication({
     auth: {
         clientId: config.clientId,
-        redirectUri: config.redirectUri
+        redirectUri: config.redirectUri,
     },
     cache: {
         cacheLocation: "sessionStorage",
-        storeAuthStateInCookie: true
-    }
+        storeAuthStateInCookie: true,
+    },
 });
 
 // Check if there are already accounts in the browser session
@@ -41,7 +41,6 @@ const container = document.getElementById("app");
 
 const root = ReactDOM.createRoot(container);
 
-console.log("instalnce index.js", msalInstance);
 root.render(
-    <App pca = { msalInstance }/>
+    <App pca={msalInstance} />,
 );

@@ -4,16 +4,17 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import "./assets/style.css"; // import css, required by tailwindcss
 
+import { MsalProvider } from "@azure/msal-react";
 import ProvideAppContext from "./appContext";
 import Navbar from "./navbar";
 import Search from "./search/search";
 import Statistics from "./statistics/statistics";
-import {MsalProvider} from "@azure/msal-react";
 
-export default function App({ pca }){
+function App({ pca }) {
     return (
         <MsalProvider instance={pca}>
             <ProvideAppContext>
@@ -32,8 +33,15 @@ export default function App({ pca }){
                             />
                         </Route>
                     </Routes>
-                </BrowserRouter>,
+                </BrowserRouter>
+                ,
             </ProvideAppContext>
         </MsalProvider>
     );
 }
+
+App.propTypes = {
+    pca: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default App;
