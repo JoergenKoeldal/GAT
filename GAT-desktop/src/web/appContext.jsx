@@ -55,10 +55,10 @@ function useProvideAppContext() {
             }
         };
         checkUser();
-    }, [inProgress, accounts, instance, user]);
+    }, [inProgress, accounts, instance]);
 
     const signIn = async () => {
-        await instance.loginPopup({
+        await instance.loginRedirect({
             scopes: config.scopes,
             prompt: "select_account",
         });
@@ -69,10 +69,11 @@ function useProvideAppContext() {
             timeFormat: u.mailboxSettings?.timeFormat || "",
             timeZone: u.mailboxSettings?.timeZone || "UTC",
         });
+        console.log("Setting user", u);
     };
 
     const signOut = async () => {
-        await instance.loginPopup();
+        await instance.logout();
         setUser(undefined);
     };
 

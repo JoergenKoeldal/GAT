@@ -25,7 +25,7 @@ export default function Search() {
             Search page!
             <form className="flex flex-row" onSubmit={fetchEmails}>
                 <input className="shadow appearance-none border w-full rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" type="text" value={searchString} onInput={(evt) => setSearchString(evt.target.value)} />
-                <Button isSubmit={true}>
+                <Button isSubmit>
                     Søg mails
                 </Button>
             </form>

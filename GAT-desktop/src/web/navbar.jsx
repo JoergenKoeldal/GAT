@@ -23,21 +23,25 @@ export default function Navbar() {
                             <Link to="/statistics" className="pr-4 pl-3 text-gray-700 hover:text-blue-850">Statistik</Link>
                         </div>
                     </div>
-                    <span>
-                        {user.displayName}
-                    </span>
+                    <AuthenticatedTemplate>
+                        <span className="mr-2">
+                            {user.displayName}
+                        </span>
+                        <Button onClick={appContext.signOut}>
+                            Log ud
+                        </Button>
+                    </AuthenticatedTemplate>
+                    <UnauthenticatedTemplate>
+                        <Button onClick={appContext.signIn}>
+                            Log ind
+                        </Button>
+                    </UnauthenticatedTemplate>
                 </div>
             </nav>
             <div className="container mx-auto">
                 <AuthenticatedTemplate>
                     <Outlet />
                 </AuthenticatedTemplate>
-                <UnauthenticatedTemplate>
-                    <Button onClick={appContext.signIn}>
-                        Log ind
-                    </Button>
-                    <Outlet />
-                </UnauthenticatedTemplate>
             </div>
         </div>
     );
