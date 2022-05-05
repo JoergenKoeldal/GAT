@@ -1,20 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function EmailList({ emails }) {
-    const emailElements = [];
+function Email({ email }) {
+    return (
+        <div>
+            <span className="text-sm font-bold">
+                { email.subject }
+            </span>
+            <div />
+        </div>
+    );
+}
 
-    emails?.forEach((e) => {
-        emailElements.push(
-            <h5 key={e.id}>
-                {e.subject}
-            </h5>,
+Email.propTypes = {
+    email: PropTypes.instanceOf(Object).isRequired,
+};
+
+function EmailList({ emails: results }) {
+    const elements = [];
+
+    results?.forEach((e) => {
+        elements.push(
+            <Email key={e.id} email={e} />,
         );
     });
 
     return (
         <div>
-            {emailElements}
+            {elements}
         </div>
     );
 }

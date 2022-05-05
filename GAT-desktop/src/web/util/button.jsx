@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function Button({ onClick, children, isSubmit }) {
     return (
-        <button className="rounded bg-blue-700 text-white p-2" type={isSubmit ? "submit" : "button"} onClick={onClick}>
+        <button className="rounded bg-blue-700 text-white p-2 hover:bg-blue-800" type={isSubmit ? "submit" : "button"} onClick={onClick}>
             {children}
         </button>
     );

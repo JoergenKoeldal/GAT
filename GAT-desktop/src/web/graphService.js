@@ -26,9 +26,10 @@ export async function getUser(authProvider) {
 export async function getUserMails(authProvider, { search }) {
     ensureClient(authProvider);
     const mails = await graphClient.api("/me/messages")
-        // .select("id,createdDateTime, hasAttachments, subject, body, from")
-        .search(search)
-        .top(20)
+        .select("id,createdDateTime, hasAttachments, subject, body, from") // only select needed data
+        .search(search) // Search
+        .top(20) // return top 20
+        .count(true) // Count the total number of results
         .get();
     return mails;
 }
