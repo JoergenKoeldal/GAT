@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GatApi.Data;
 using GatApi.Models;
+using GatApi.ViewModels;
 
 namespace GatApi.Controllers
 {
@@ -23,11 +24,24 @@ namespace GatApi.Controllers
 
         // GET: api/KeywordLists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<KeywordList>>> GetKeywordList()
+        public async Task<ActionResult<IEnumerable<KeywordListViewModel>>> GetKeywordList()
         {
-            var keywordLists = await _context.KeywordList.Include(keywordList => keywordList.KeywordListHasKeywords).ThenInclude(klhk => klhk.Keyword).ToListAsync();
+            var keywordList = await _context.KeywordList.Include(keywordList => keywordList.KeywordListHasKeywords).ThenInclude(klhk => klhk.Keyword).ToListAsync();
 
-            return keywordLists;
+            List<KeywordListViewModel> keywordListViewModels = new List<KeywordListViewModel>();
+
+            foreach(KeywordList k in keywordList)
+            {
+                KeywordListViewModel keywordListViewModel = new KeywordListViewModel();
+                keywordListViewModel.Name = k.Name;
+                foreach(KeywordListHasKeyword klhk in k.KeywordListHasKeywords)
+                {
+                    keywordListViewModel.Keywords.Add(klhk.Keyword.Word);
+                }
+                keywordListViewModels.Add(keywordListViewModel);
+            }
+
+            return keywordListViewModels;
         }
 
         // GET: api/KeywordLists/5
