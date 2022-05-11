@@ -10,7 +10,7 @@ import EmailList from "./emailList";
 export default function Search() {
     const appContext = useAppContext();
     const [emails, setEmails] = useState([]);
-    const [searchString, setSearchString] = useState("");
+    const [searchString, setSearchString] = useState("body:cv OR subject:cbb");
 
     const fetchEmails = (evt) => {
         evt.preventDefault();
