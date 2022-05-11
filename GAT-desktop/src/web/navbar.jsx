@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
 
-import { getSources } from "./apiService";
+import { generatePdf } from "./apiService";
 
 import { useAppContext } from "./appContext";
 import Button from "./util/button";
@@ -24,7 +24,7 @@ export default function Navbar() {
                             <Link to="/" className="pr-4 pl-3 text-gray-700 hover:text-blue-800">Søg</Link>
                             <Link to="/statistics" className="pr-4 pl-3 text-gray-700 hover:text-blue-850">Statistik</Link>
                         </div>
-                        <Button onClick={() => getSources()}>Phillip Test</Button>
+                        <Button onClick={() => generatePdf()}>Phillip Test</Button>
                     </div>
                     <AuthenticatedTemplate>
                         <span className="mr-2">
