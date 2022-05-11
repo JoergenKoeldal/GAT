@@ -1,6 +1,7 @@
 ﻿
 using GatApi.ViewModels;
 using iText.IO.Font;
+using iText.IO.Source;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
@@ -14,13 +15,14 @@ namespace GatApi.Util
 {
     public static class Util
     {
-        public static void GeneratePdf(List<PdfViewModel> pdfViewModels, DateTime currentScheduleDate)
+        public static Byte[] GeneratePdf(List<PdfViewModel> pdfViewModels, DateTime currentScheduleDate)
         {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             string newFont = "Resources/Font/FreeSans.ttf";
             PdfFont freeSansFont = PdfFontFactory.CreateFont(newFont, PdfEncodings.WINANSI);
 
-            PdfWriter writer = new PdfWriter("NewPdfTest.pdf");
-            PdfDocument pdf = new PdfDocument(writer);
+           //PdfWriter writer = new PdfWriter("NewPdfTest.pdf");
+            PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
             Document document = new Document(pdf);
             Paragraph header = new Paragraph("GDPR for: " + currentScheduleDate.ToString("dd-MM-yyyy"))
                .SetTextAlignment(TextAlignment.CENTER)
@@ -119,6 +121,10 @@ namespace GatApi.Util
                 }
                 return table;
             }
+
+            var data = baos.ToArray();
+
+            return data;
 
         }
 
