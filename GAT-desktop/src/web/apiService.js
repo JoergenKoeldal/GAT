@@ -1,4 +1,4 @@
-export function getSources(){
-    console.log("F'rst denne her")
+export function getSources() {
+    console.log("F'rst denne her");
     alert("Den virker!");
 }

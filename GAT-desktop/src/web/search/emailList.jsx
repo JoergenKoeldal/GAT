@@ -1,20 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-function Email({ email }) {
-    return (
-        <div>
-            <span className="text-sm font-bold">
-                { email.subject }
-            </span>
-            <div />
-        </div>
-    );
-}
-
-Email.propTypes = {
-    email: PropTypes.instanceOf(Object).isRequired,
-};
+import Email from "./email/email";
 
 function EmailList({ emails: results }) {
     const elements = [];

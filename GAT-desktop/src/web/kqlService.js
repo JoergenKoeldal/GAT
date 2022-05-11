@@ -27,27 +27,24 @@ export default function kqlSearch(kqlString, searchObj) {
             searchString = searchObj[key];
         }
         searchString = searchString.toLowerCase();
+        const indexes = [];
         kql[key].forEach((val) => {
-            const indexes = [];
+            const { length } = val;
             let index = searchString.indexOf(val);
+
             while (index !== -1) {
-                indexes.push(index);
+                indexes.push(
+                    {
+                        start: index,
+                        stop: index + length,
+                    },
+                );
                 index = searchString.indexOf(val, index + 1);
             }
-            if (indexes.length > 0) {
-                if (Object.keys(result).includes(key)) {
-                    result[key].push({
-                        searchValue: val,
-                        indexes,
-                    });
-                } else {
-                    result[key] = [{
-                        searchValue: val,
-                        indexes,
-                    }];
-                }
-            }
         });
+        if (indexes.length > 0) {
+            result[key] = indexes;
+        }
     });
     return result;
 }

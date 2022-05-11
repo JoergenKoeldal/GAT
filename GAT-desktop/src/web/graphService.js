@@ -33,7 +33,7 @@ export async function getUserMails(authProvider, { search }) {
         .top(20) // return top 20
         .count(true) // Count the total number of results
         .get();
-    mails.value = mails.value.map((m) => ({ search: kqlSearch, ...m }));
+    mails.value = mails.value.map((m) => ({ search: kqlSearch(search, m), ...m }));
 
     return mails;
 }
