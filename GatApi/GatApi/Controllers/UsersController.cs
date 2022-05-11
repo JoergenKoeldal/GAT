@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using GatApi.Data;
 using GatApi.Models;
 using GatApi.ViewModels;
+using iText.IO.Source;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace GatApi.Controllers
 {
@@ -53,7 +56,7 @@ namespace GatApi.Controllers
         }
         [HttpGet]
         [Route("pdf")]
-        public async Task<ActionResult<string>> CreatePdf()
+        public async Task<IActionResult> CreatePdf()
         {
 
             Schedule CurrentSchedule = _context.Schedule.Where(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now).FirstOrDefault();
@@ -103,8 +106,13 @@ namespace GatApi.Controllers
             }
 
 
-            Util.Util.GeneratePdf(pdfViewModels, CurrentSchedule.EndDate);
-            return "PDF file generated!";
+            var pdfByteArray = Util.Util.GeneratePdf(pdfViewModels, CurrentSchedule.EndDate);
+
+            MemoryStream ms = new MemoryStream(pdfByteArray);
+
+            return new FileStreamResult(ms, "application/pdf");
+
+            //return File(pdfByteArray, "application/pdf", "my_file.pdf");
         }
 
         // GET: api/Users/5
