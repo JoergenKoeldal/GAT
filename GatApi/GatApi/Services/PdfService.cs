@@ -1,27 +1,97 @@
-﻿
+﻿using GatApi.Data;
+using GatApi.Models;
 using GatApi.ViewModels;
-using iText.IO.Font;
 using iText.IO.Source;
+using Microsoft.EntityFrameworkCore;
 using iText.Kernel.Colors;
-using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using Microsoft.Exchange.WebServices.Data;
 
-namespace GatApi.Util
+namespace GatApi.Services
 {
-    public static class Util
+    public class PdfService
     {
-        public static Byte[] GeneratePdf(List<PdfViewModel> pdfViewModels, DateTime currentScheduleDate)
+        private readonly GatApiContext _context;
+
+        public PdfService(GatApiContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<MemoryStream> GetPdf(long departmentId)
+        {
+            Schedule currentSchedule = _context.Schedule.Where(x => x.StartDate < DateTime.Now && x.EndDate > DateTime.Now).FirstOrDefault();
+
+            List<User> userList = await _context.User.Where(x => x.Department.DepartmentId == departmentId).
+                                                      Include(user => user.Department).
+                                                      Include(user => user.UserFinishedSchedules).
+                                                      ThenInclude(userFinishedSchedule => userFinishedSchedule.Schedule).
+                                                      OrderBy(x => x.Name).ToListAsync();
+
+            List<PdfViewModel> pdfViewModels = new List<PdfViewModel>();
+
+            pdfViewModels = AddPdfModelsToList(userList, currentSchedule, pdfViewModels);
+
+            byte[] pdfByteArray = DrawPdf(currentSchedule.EndDate, pdfViewModels);
+
+            MemoryStream ms = new MemoryStream(pdfByteArray);
+
+            return ms;
+
+        }
+
+        public List<PdfViewModel> AddPdfModelsToList(List<User> userList, Schedule currentSchedule, List<PdfViewModel> pdfViewModels)
+        {
+            foreach (User user in userList)
+            {
+                PdfViewModel pdfViewModel = new PdfViewModel();
+                pdfViewModel.DepartmentName = user.Department.Name;
+                pdfViewModel.Name = user.Name;
+                if (user.UserFinishedSchedules.Count > 0)
+                {
+                    foreach (UserFinishedSchedule ufs in user.UserFinishedSchedules)
+                    {
+                        if (ufs.ScheduleId == currentSchedule.ScheduleId)
+                        {
+                            pdfViewModel.IsScheduleFinished = "X";
+                            pdfViewModel.ScheduleFinishedAt = ufs.FinishedAt.ToString("dd-MM-yyyy");
+                        }
+                    }
+                }
+                pdfViewModels.Add(pdfViewModel);
+
+                List<Cleanup> cleanupList = _context.Cleanup.Where(x => x.User.UserId == user.UserId && x.Timestamp > currentSchedule.StartDate && x.Timestamp < currentSchedule.EndDate).Include(cleanup => cleanup.Source).ToList();
+
+
+                foreach (Cleanup cleanup in cleanupList)
+                {
+                    switch (cleanup.Source.Name)
+                    {
+                        case "Email":
+                            pdfViewModel.Email = "X";
+                            break;
+                        case "C-drev":
+                            pdfViewModel.CDrev = "X";
+                            break;
+                        case "Teams":
+                            pdfViewModel.Teams = "X";
+                            break;
+                        case "Skype":
+                            pdfViewModel.Skype = "X";
+                            break;
+                    }
+                }
+            }
+            return pdfViewModels;
+        }
+
+        public Byte[] DrawPdf(DateTime currentScheduleDate, List<PdfViewModel> pdfViewModels)
         {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            string newFont = "Resources/Font/FreeSans.ttf";
-            PdfFont freeSansFont = PdfFontFactory.CreateFont(newFont, PdfEncodings.WINANSI);
 
-           //PdfWriter writer = new PdfWriter("NewPdfTest.pdf");
             PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
             Document document = new Document(pdf);
             Paragraph header = new Paragraph("GDPR for: " + currentScheduleDate.ToString("dd-MM-yyyy"))
@@ -63,7 +133,11 @@ namespace GatApi.Util
 
             document.Close();
 
+            var data = baos.ToArray();
 
+            return data;
+
+            // ------------------- Local Methods -----------------
 
             Table CreateHeaders(Table table)
             {
@@ -86,7 +160,7 @@ namespace GatApi.Util
 
                     Cell nameCell = new Cell(2, 1)
                                  .SetTextAlignment(TextAlignment.CENTER)
-                                 .Add(new Paragraph(pvm.Name).SetFont(freeSansFont));
+                                 .Add(new Paragraph(pvm.Name));
                     table.AddCell(nameCell);
 
                     Cell cDrevCell = new Cell(2, 1)
@@ -116,47 +190,13 @@ namespace GatApi.Util
 
                     Cell completedDateCell = new Cell(2, 1)
                                 .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.ScheduleFinishedAt));                               
+                                .Add(new Paragraph(pvm.ScheduleFinishedAt));
                     table.AddCell(completedDateCell);
                 }
                 return table;
             }
-
-            var data = baos.ToArray();
-
-            return data;
-
         }
 
-        public static void SendEmail()
-        {
-            ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2016);
-            service.Credentials = new WebCredentials("phillip.glimoe@hotmail.com", "xxxx");
-            service.TraceEnabled = true;
-            service.TraceFlags = TraceFlags.All;
-            service.AutodiscoverUrl("phillip.glimoe@hotmail.com", RedirectionUrlValidationCallback);
-            EmailMessage email = new EmailMessage(service);
-            email.ToRecipients.Add("phillip.glimoe@hotmail.com");
-            email.Subject = "HelloWorld";
-            email.Attachments.AddFileAttachment("NewPdfTest.pdf");
-            email.Body = new MessageBody("This is the first email I've sent by using the EWS Managed API");
-            email.Send();
-        }
-
-        private static bool RedirectionUrlValidationCallback(string redirectionUrl)
-        {
-            // The default for the validation callback is to reject the URL.
-            bool result = false;
-            Uri redirectionUri = new Uri(redirectionUrl);
-            // Validate the contents of the redirection URL. In this simple validation
-            // callback, the redirection URL is considered valid if it is using HTTPS
-            // to encrypt the authentication credentials. 
-            if (redirectionUri.Scheme == "https")
-            {
-                result = true;
-            }
-            return result;
-        }
 
     }
 }
