@@ -6,7 +6,6 @@ import { useAppContext } from "../appContext";
 import { getUserMails } from "../graphService";
 import Button from "../util/button";
 import Collapsible from "../util/collapsible";
-import EmailList from "./emailList";
 import KeywordListCheckBox from "./keywordCheckBox";
 import SourceCheckBox from "./sourceCheckBox";
 import SearchResult from "./result/searchResult";
@@ -46,7 +45,6 @@ export default function Search() {
             </Collapsible>
 
 
-            <EmailList emails={emails} />
             <div className="w-full flex">
                 <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
                     {emails?.map(r => {
