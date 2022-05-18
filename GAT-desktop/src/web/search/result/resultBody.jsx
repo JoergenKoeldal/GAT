@@ -1,14 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-function EmailBodyPreview({ body, highlightIndexes }) {
+export default function ResultBody({ body, highlightIndexes, preview }) {
+    if(!body){
+        return "";
+    }
     const bodyElements = [];
     let currentIndex = 0;
 
     highlightIndexes?.forEach(({ start, stop }) => {
         bodyElements.push(
             <span key={currentIndex}>
-                {body.substring(start - 30, start)}
+                { preview ? 
+                    body.substring(start - 30, start) 
+                    : 
+                    body.substring(currentIndex, start)
+                }
             </span>,
         );
         bodyElements.push(
@@ -18,6 +24,13 @@ function EmailBodyPreview({ body, highlightIndexes }) {
         );
         currentIndex = stop;
     });
+    if(!preview && currentIndex !== body.length - 1){
+        bodyElements.push(
+            <span key={currentIndex}>
+                {body.substring(currentIndex, body.length)}
+            </span>,
+        )
+    }
 
     return (
         <div className="flex flex-wrap">
@@ -26,9 +39,3 @@ function EmailBodyPreview({ body, highlightIndexes }) {
     );
 }
 
-EmailBodyPreview.propTypes = {
-    body: PropTypes.string.isRequired,
-    highlightIndexes: PropTypes.instanceOf(Array).isRequired,
-};
-
-export default EmailBodyPreview;

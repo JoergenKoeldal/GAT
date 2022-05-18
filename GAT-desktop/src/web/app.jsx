@@ -23,7 +23,8 @@ function App({ pca }) {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Navbar />}>
-                            <Route path="/search" element={<Search />} />
+                            <Route path="/search" element={<Search />}>
+                            </Route>
                             <Route path="/statistics" element={<Statistics />} />
                             <Route
                                 path="*"

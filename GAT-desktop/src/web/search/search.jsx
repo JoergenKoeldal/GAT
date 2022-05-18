@@ -2,11 +2,6 @@ import React, {
     useState,
 } from "react";
 
-import {
-    Routes,
-    Route,
-} from "react-router-dom";
-
 import { useAppContext } from "../appContext";
 import { getUserMails } from "../graphService";
 import Button from "../util/button";
@@ -14,10 +9,12 @@ import Collapsible from "../util/collapsible";
 import EmailList from "./emailList";
 import KeywordListCheckBox from "./keywordCheckBox";
 import SourceCheckBox from "./sourceCheckBox";
+import SearchResult from "./result/searchResult";
 
 export default function Search() {
     const appContext = useAppContext();
     const [emails, setEmails] = useState([]);
+    const [selectedResult, setSelectedResult] = useState({});
     const [searchString, setSearchString] = useState("body: cv");
 
     const fetchEmails = (evt) => {
@@ -50,12 +47,28 @@ export default function Search() {
 
 
             <EmailList emails={emails} />
-            <div className="w-full">
+            <div className="w-full flex">
                 <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
-                    <EmailList emails={emails} />
+                    {emails?.map(r => {
+                        return (
+                            <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
+                                <SearchResult 
+                                    subject={r.subject} 
+                                    body={r.body.content} 
+                                    search={r.search}
+                                    preview={true}
+                                />
+                            </div>
+                        );
+                    })}
                 </div>
-                <div className="w-1/2">
-                    
+                <div className="w-1/2 ml-2">
+                    <SearchResult 
+                        subject={selectedResult?.subject} 
+                        body={selectedResult?.body?.content} 
+                        search={selectedResult?.search}
+                        preview={false}
+                    />
                 </div>
             </div>
         </div>

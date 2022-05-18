@@ -1,7 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-function EmailSubject({ subject, highlightIndexes }) {
+export default function ResultSubject({ subject, highlightIndexes }) {
+    if(!subject){
+        return "";
+    }
     const subjectElements = [];
     let currentIndex = 0;
     highlightIndexes?.forEach(({ start, stop }) => {
@@ -31,10 +33,3 @@ function EmailSubject({ subject, highlightIndexes }) {
         </div>
     );
 }
-
-EmailSubject.propTypes = {
-    subject: PropTypes.string.isRequired,
-    highlightIndexes: PropTypes.instanceOf(Array).isRequired,
-};
-
-export default EmailSubject;
