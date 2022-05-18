@@ -5,19 +5,23 @@ import Button from "../util/button";
 
 
 
-export default function Collapsible({ children, buttonTitle }) {
+export default function Collapsible({ children, buttonTitle, collapsed, onCollapse }) {
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     function collaps() {
-
+        collapsed = undefined;
         setIsCollapsed(!isCollapsed)
-
+        if (onCollapse) {
+            onCollapse(isCollapsed);
+        }
     }
 
     const contentStyle = {};
 
-    if (isCollapsed) {
+    const actuallyCollapsed = collapsed !== undefined ? collapsed : isCollapsed;
+
+    if (actuallyCollapsed) {
         contentStyle.display = "none";
     } else {
         contentStyle.display = "block";

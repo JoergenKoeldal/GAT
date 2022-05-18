@@ -6,7 +6,7 @@ import React, {
 import { getKeywordLists } from "../apiService";
 import Collapsible from "../util/collapsible";
 
-export default function KeywordListCheckBox() {
+export default function KeywordListCheckBox({ onChange }) {
 
     const [keywordList, setKeywordList] = useState([])
     const [checkBoxChecked, setcheckBoxState] = useState([]);
@@ -42,13 +42,22 @@ export default function KeywordListCheckBox() {
 
     function checkBoxState(evt) {
 
+        let newCheckBoxState;
+
         if (evt.target.checked) {
             //Tager checkbox staten, pakker alle elementerne ud (de 3 punktummer), og til sidst sættes det sidste element på
-            setcheckBoxState([...checkBoxChecked, evt.target.value])
+            newCheckBoxState = [...checkBoxChecked, evt.target.value]
         } else {
             //Filtrere den ikke markerede listes navne fra
-            setcheckBoxState(checkBoxChecked.filter((c) => c != evt.target.value))
-        }
+            newCheckBoxState = checkBoxChecked.filter((c) => c != evt.target.value)
+        } setcheckBoxState(newCheckBoxState);
+
+        let keywords = []
+        keywordList.filter((l) => newCheckBoxState.includes(l.name))
+            .forEach((l) => keywords = [...keywords, ...l.keywords])
+
+        
+        onChange(keywords)
        
     }
 

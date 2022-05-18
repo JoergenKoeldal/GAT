@@ -14,16 +14,22 @@ export default function Search() {
     const appContext = useAppContext();
     const [emails, setEmails] = useState([]);
     const [selectedResult, setSelectedResult] = useState({});
+    const [isFormCollapsed, setIsFormCollapsed] = useState(false);
     const [searchString, setSearchString] = useState("body: cv");
 
     const fetchEmails = (evt) => {
         evt.preventDefault();
-        getUserMails(appContext.user, { search: searchString })
+        const search = searchString.split(" ").reduce((wholeSearch, currentword) => {
+            return wholeSearch + `body: ${currentword} OR subject: ${currentword} OR `;
+        }, "")
+        //Tager længden af stringen og fjerner de sidste 4 characters for at undgå problemet med OR i slutningen af stringen
+        getUserMails(appContext.user, { search: search.substring(0, search.length - 4) })
             .then((res) => {
                 setEmails(res.value);
             });
+        setIsFormCollapsed(true);
     };
-
+    console.log(emails.length)
     return (
         <div>
             
@@ -34,17 +40,17 @@ export default function Search() {
                 </Button>
                
             </form>
-            <Collapsible buttonTitle="GDPR Søgning" >
+            <Collapsible collapsed={isFormCollapsed} onCollapse={(c) => setIsFormCollapsed(c)} buttonTitle="GDPR Søgning" >
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
                 <br />
                 <SourceCheckBox />
                 <br />
                 <p className="font-bold">Templates til søgning</p>
-                <KeywordListCheckBox />
+                <KeywordListCheckBox onChange={(keywords) => setSearchString(keywords.join(" "))} />
 
             </Collapsible>
 
-
+            <Collapsible buttonTitle="Email">
             <div className="w-full flex">
                 <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
                     {emails?.map(r => {
@@ -68,7 +74,8 @@ export default function Search() {
                         preview={false}
                     />
                 </div>
-            </div>
+                </div>
+            </Collapsible>
         </div>
     );
 }
