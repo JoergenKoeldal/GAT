@@ -7,6 +7,8 @@ import { generatePdf } from "./apiService";
 
 import { useAppContext } from "./appContext";
 import Button from "./util/button";
+import SourceCheckBox from "./search/sourceCheckBox";
+
 
 export default function Navbar() {
     const appContext = useAppContext();
@@ -24,6 +26,7 @@ export default function Navbar() {
                             <Link to="/" className="pr-4 pl-3 text-gray-700 hover:text-blue-800">Søg</Link>
                             <Link to="/statistics" className="pr-4 pl-3 text-gray-700 hover:text-blue-850">Statistik</Link>
                         </div>
+                        <SourceCheckBox />
                         <Button onClick={() => generatePdf()}>Phillip Test</Button>
                     </div>
                     <AuthenticatedTemplate>

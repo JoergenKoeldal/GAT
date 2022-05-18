@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-export function getSources() {
-    console.log("F'rst denne her");
-    alert("Den virker!");
-}
-=======
 
 //gets all sources from the API
 export async function getSources() {
@@ -25,7 +19,7 @@ export async function getKeywordLists() {
 //gets all keywords from the API
 export async function generatePdf() {
     debugger;
-    const response = await fetch('https://localhost:7146/api/Users/pdf', { headers: { 'Content-Type': "application/json" } });
+    const response = await fetch('https://jnapi.azurewebsites.net/api/pdf', { headers: { 'Content-Type': "application/json" } });
     
 }
 
@@ -34,4 +28,3 @@ export async function generatePdf() {
 //CSP - Content Security Policy
 
 
->>>>>>> 2813914 (create fetch endpoints)
