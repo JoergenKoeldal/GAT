@@ -2,12 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import Email from "./email/email";
 
+import {
+    Link
+} from "react-router-dom";
+
 function EmailList({ emails: results }) {
     const elements = [];
 
     results?.forEach((e) => {
         elements.push(
-            <Email key={e.id} email={e} />,
+            <Link key={e.id} to={e.id}>
+                <Email email={e} />
+            </Link>
         );
     });
 

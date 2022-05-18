@@ -2,6 +2,11 @@ import React, {
     useState,
 } from "react";
 
+import {
+    Routes,
+    Route,
+} from "react-router-dom";
+
 import { useAppContext } from "../appContext";
 import { getUserMails } from "../graphService";
 import Button from "../util/button";
@@ -13,7 +18,7 @@ import SourceCheckBox from "./sourceCheckBox";
 export default function Search() {
     const appContext = useAppContext();
     const [emails, setEmails] = useState([]);
-    const [searchString, setSearchString] = useState("");
+    const [searchString, setSearchString] = useState("body: cv");
 
     const fetchEmails = (evt) => {
         evt.preventDefault();
@@ -45,6 +50,14 @@ export default function Search() {
 
 
             <EmailList emails={emails} />
+            <div className="w-full">
+                <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
+                    <EmailList emails={emails} />
+                </div>
+                <div className="w-1/2">
+                    
+                </div>
+            </div>
         </div>
     );
 }

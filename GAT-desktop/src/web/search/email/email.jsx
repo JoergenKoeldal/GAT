@@ -5,7 +5,7 @@ import EmailBodyPreview from "./emailBodyPreview";
 
 function Email({ email }) {
     return (
-        <div>
+        <div className="hover:bg-gray-200">
             <EmailSubject subject={email.subject} highlightIndexes={email.search?.subject} />
             <EmailBodyPreview body={email.body.content} highlightIndexes={email.search?.body} />
         </div>

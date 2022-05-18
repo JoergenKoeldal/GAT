@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 function EmailBodyPreview({ body, highlightIndexes }) {
     const bodyElements = [];
     let currentIndex = 0;
+
     highlightIndexes?.forEach(({ start, stop }) => {
         bodyElements.push(
             <span key={currentIndex}>
@@ -17,10 +18,11 @@ function EmailBodyPreview({ body, highlightIndexes }) {
         );
         currentIndex = stop;
     });
+
     return (
-        <p>
+        <div className="flex flex-wrap">
             { bodyElements }
-        </p>
+        </div>
     );
 }
 
