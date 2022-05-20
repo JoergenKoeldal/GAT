@@ -29,16 +29,16 @@ export default function Search() {
             });
         setIsFormCollapsed(true);
     };
-    console.log(emails.length)
+
     return (
         <div>
-            
+
             <form className="flex flex-row" onSubmit={fetchEmails}>
                 <input className="shadow border w-full rounded py-2 px-3 text-gray-700 focus:color-blue-800 mr-2" type="text" value={searchString} onInput={(evt) => setSearchString(evt.target.value)} />
                 <Button isSubmit>
                     Søg mails
                 </Button>
-               
+
             </form>
             <Collapsible collapsed={isFormCollapsed} onCollapse={(c) => setIsFormCollapsed(c)} buttonTitle="GDPR Søgning" >
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
@@ -53,23 +53,21 @@ export default function Search() {
             <Collapsible buttonTitle="Email">
             <div className="w-full flex">
                 <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
-                    {emails?.map(r => {
-                        return (
-                            <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
-                                <SearchResult 
-                                    subject={r.subject} 
-                                    body={r.body.content} 
-                                    search={r.search}
-                                    preview={true}
-                                />
-                            </div>
-                        );
-                    })}
+                    {emails?.map((r) => (
+                        <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
+                            <SearchResult
+                                subject={r.subject}
+                                body={r.body.content}
+                                search={r.search}
+                                preview
+                            />
+                        </div>
+                    ))}
                 </div>
                 <div className="w-1/2 ml-2">
-                    <SearchResult 
-                        subject={selectedResult?.subject} 
-                        body={selectedResult?.body?.content} 
+                    <SearchResult
+                        subject={selectedResult?.subject}
+                        body={selectedResult?.body?.content}
                         search={selectedResult?.search}
                         preview={false}
                     />

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
-import Button from "../util/button";
-
-
-
+import Button from "./button";
 
 export default function Collapsible({ children, buttonTitle, collapsed, onCollapse }) {
 
@@ -27,7 +24,6 @@ export default function Collapsible({ children, buttonTitle, collapsed, onCollap
         contentStyle.display = "block";
     }
 
-
     return (
 
         <div>
@@ -35,15 +31,12 @@ export default function Collapsible({ children, buttonTitle, collapsed, onCollap
             <Button className="collapsible" onClick={() => collaps()}>
                 {buttonTitle}
             </Button>
-            
-            <div style={contentStyle}> {children}</div>
+
+            <div style={contentStyle}>
+                {" "}
+                {children}
+            </div>
         </div>
-        
+
     );
-
-
-
-    
-    }
-
-
+}

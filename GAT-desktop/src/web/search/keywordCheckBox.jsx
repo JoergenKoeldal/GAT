@@ -1,10 +1,10 @@
 import React, {
-    useState, useEffect
+    useState, useEffect,
 } from "react";
-
 
 import { getKeywordLists } from "../apiService";
 import Collapsible from "../util/collapsible";
+import Tag from "../util/tag";
 
 export default function KeywordListCheckBox({ onChange }) {
 
@@ -13,8 +13,8 @@ export default function KeywordListCheckBox({ onChange }) {
 
     useEffect(() => {
         const fetchkeywordList = async () => {
-            const keywordList = await getKeywordLists();
-            setKeywordList(keywordList)
+            const keywords = await getKeywordLists();
+            setKeywordList(keywords);
         };
         fetchkeywordList();
     }, []);
@@ -23,25 +23,23 @@ export default function KeywordListCheckBox({ onChange }) {
     keywordList.forEach((e) => {
         checkboxes.push(
             <div key={e.name}>
-            <label key={e.name} >
-                    <input type="checkbox" value={e.name} checked={checkBoxChecked.includes(e.name)} onChange={ checkBoxState} />
+                <label key={e.name}>
+                    <input type="checkbox" value={e.name} checked={checkBoxChecked.includes(e.name)} onChange={checkBoxState} />
                 </label>
                 <Collapsible buttonTitle={e.name}>
-                    
-
-                    <ul>
-                        {e.keywords.map(k => {
-                            return <li key={k}>{k} </li>
-                        })}
-                    </ul>
-                       
-                    </Collapsible>
-                </div>
-        )
-    })
+                    <div className="flex space-x-2">
+                        {e.keywords.map((k) => (
+                            <Tag key={k}>
+                                {k}
+                            </Tag>
+                        ))}
+                    </div>
+                </Collapsible>
+            </div>,
+        );
+    });
 
     function checkBoxState(evt) {
-
         let newCheckBoxState;
 
         if (evt.target.checked) {
@@ -58,15 +56,11 @@ export default function KeywordListCheckBox({ onChange }) {
 
         
         onChange(keywords)
-       
     }
-
-
-
 
     return (
         <div>
             {checkboxes}
         </div>
-    )
+    );
 }

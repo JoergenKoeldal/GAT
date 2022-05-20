@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function ResultSubject({ subject, highlightIndexes }) {
-    if(!subject){
+    if (!subject) {
         return "";
     }
     const subjectElements = [];

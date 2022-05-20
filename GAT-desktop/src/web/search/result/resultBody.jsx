@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function ResultBody({ body, highlightIndexes, preview }) {
-    if(!body){
+    if (!body) {
         return "";
     }
     const bodyElements = [];
@@ -10,11 +10,9 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
     highlightIndexes?.forEach(({ start, stop }) => {
         bodyElements.push(
             <span key={currentIndex}>
-                { preview ? 
-                    body.substring(start - 30, start) 
-                    : 
-                    body.substring(currentIndex, start)
-                }
+                { preview
+                    ? body.substring(start - 30, start)
+                    : body.substring(currentIndex, start)}
             </span>,
         );
         bodyElements.push(
@@ -24,12 +22,12 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
         );
         currentIndex = stop;
     });
-    if(!preview && currentIndex !== body.length - 1){
+    if (!preview && currentIndex !== body.length - 1) {
         bodyElements.push(
             <span key={currentIndex}>
                 {body.substring(currentIndex, body.length)}
             </span>,
-        )
+        );
     }
 
     return (
@@ -38,4 +36,3 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
         </div>
     );
 }
-
