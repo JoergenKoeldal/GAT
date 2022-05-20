@@ -3,7 +3,7 @@ import React, {
 } from "react";
 
 import { useAppContext } from "../appContext";
-import { getUserMails } from "../graphService";
+import { deleteUserMail, getUserMails } from "../graphService";
 import Button from "../util/button";
 import Collapsible from "../util/collapsible";
 import KeywordListCheckBox from "./keywordCheckBox";
@@ -29,12 +29,21 @@ export default function Search() {
         setCollapsibleStates({...collapsibleStates, form:true, email: false});
     };
 
+    const deleteEmal = (id) => {
+        deleteUserMail(appContext.user, id)
+            .then(res => {
+                if(res){
+                    setEmails(emails.filter(e => e.id !== id));
+                }
+            });
+    }
+
     return (
         <div className="">
-            <Button className={"float-right"} isSubmit onClick={() => fetchEmails()}>
-                Søg
-            </Button>
             <Collapsible collapsed={collapsibleStates.form} onCollapse={(c) => setCollapsibleStates({...collapsibleStates, form: c})} buttonTitle="GDPR Søgning" >
+                <Button className={"float-right"} isSubmit onClick={() => fetchEmails()}>
+                    Søg
+                </Button>
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
                 <br />
                 <SourceCheckBox />
@@ -46,14 +55,17 @@ export default function Search() {
             <Collapsible buttonTitle="Email" collapsed={collapsibleStates.email} onCollapse={(c) => setCollapsibleStates({...collapsibleStates, email: c})} >
                 <div className="w-full flex max-h-screen">
                     <div className="w-1/2 border-r-2 border-gray-200 overflow-y-scroll">
-                        {emails?.map((r) => (
-                            <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
-                                <SearchResult
-                                    subject={r.subject}
-                                    body={r.body.content}
-                                    search={r.search}
-                                    preview
-                                />
+                        {emails?.map((r, index) => (
+                            <div className="flex py-1" key={index}>
+                                <Button color={"red"} size={"xs"} onClick={() => deleteEmal(r.id)}>Slet</Button>
+                                <div className="hover:bg-gray-200 cursor-pointer pl-2 w-full" key={r.id} onClick={() => setSelectedResult(r)}>
+                                    <SearchResult
+                                        subject={r.subject}
+                                        body={r.body.content}
+                                        search={r.search}
+                                        preview
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>

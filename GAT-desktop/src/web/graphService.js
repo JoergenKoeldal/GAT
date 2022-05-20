@@ -37,3 +37,14 @@ export async function getUserMails(authProvider, { search }) {
 
     return mails;
 }
+
+export async function deleteUserMail(authProvider, emailId){
+    ensureClient(authProvider);
+    try {
+        await graphClient.api(`/me/messages/${emailId}`).delete();
+    }
+    catch(err){
+        return false;
+    }
+    return true;
+}
