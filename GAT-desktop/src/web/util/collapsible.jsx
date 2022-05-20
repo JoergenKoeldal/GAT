@@ -2,41 +2,35 @@ import React, { useState } from "react";
 
 import Button from "./button";
 
-export default function Collapsible({ children, buttonTitle, collapsed, onCollapse }) {
+export default function Collapsible({ children, initiallyCollapsed, buttonTitle, collapsed, onCollapse }) {
 
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(initiallyCollapsed || false);
 
     function collaps() {
-        collapsed = undefined;
-        setIsCollapsed(!isCollapsed)
-        if (onCollapse) {
-            onCollapse(isCollapsed);
+        if(collapsed !== undefined){
+            onCollapse(!collapsed);
+        }
+        else{
+            setIsCollapsed(!isCollapsed)
         }
     }
 
     const contentStyle = {};
 
-    const actuallyCollapsed = collapsed !== undefined ? collapsed : isCollapsed;
-
-    if (actuallyCollapsed) {
+    if (collapsed !== undefined ? collapsed : isCollapsed) {
         contentStyle.display = "none";
     } else {
         contentStyle.display = "block";
     }
 
     return (
-
         <div>
-
-            <Button className="collapsible" onClick={() => collaps()}>
+            <Button onClick={() => collaps()}>
                 {buttonTitle}
             </Button>
-
             <div style={contentStyle}>
-                {" "}
                 {children}
             </div>
         </div>
-
     );
 }

@@ -22,11 +22,9 @@ export default function KeywordListCheckBox({ onChange }) {
     const checkboxes = [];
     keywordList.forEach((e) => {
         checkboxes.push(
-            <div key={e.name}>
-                <label key={e.name}>
-                    <input type="checkbox" value={e.name} checked={checkBoxChecked.includes(e.name)} onChange={checkBoxState} />
-                </label>
-                <Collapsible buttonTitle={e.name}>
+            <div key={e.name} className="flex my-2">
+                <input className="w-5 h-5 mr-2" type="checkbox" value={e.name} checked={checkBoxChecked.includes(e.name)} onChange={checkBoxState} />
+                <Collapsible buttonTitle={e.name} initiallyCollapsed={true}>
                     <div className="flex space-x-2">
                         {e.keywords.map((k) => (
                             <Tag key={k}>

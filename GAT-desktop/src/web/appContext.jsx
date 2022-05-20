@@ -69,7 +69,6 @@ function useProvideAppContext() {
             timeFormat: u.mailboxSettings?.timeFormat || "",
             timeZone: u.mailboxSettings?.timeZone || "UTC",
         });
-        console.log("Setting user", u);
     };
 
     const signOut = async () => {

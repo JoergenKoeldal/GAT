@@ -14,11 +14,10 @@ export default function Search() {
     const appContext = useAppContext();
     const [emails, setEmails] = useState([]);
     const [selectedResult, setSelectedResult] = useState({});
-    const [isFormCollapsed, setIsFormCollapsed] = useState(false);
-    const [searchString, setSearchString] = useState("body: cv");
+    const [collapsibleStates, setCollapsibleStates] = useState({form: false, email: true});
+    const [searchString, setSearchString] = useState("");
 
-    const fetchEmails = (evt) => {
-        evt.preventDefault();
+    const fetchEmails = () => {
         const search = searchString.split(" ").reduce((wholeSearch, currentword) => {
             return wholeSearch + `body: ${currentword} OR subject: ${currentword} OR `;
         }, "")
@@ -27,51 +26,45 @@ export default function Search() {
             .then((res) => {
                 setEmails(res.value);
             });
-        setIsFormCollapsed(true);
+        setCollapsibleStates({...collapsibleStates, form:true, email: false});
     };
 
     return (
-        <div>
-
-            <form className="flex flex-row" onSubmit={fetchEmails}>
-                <input className="shadow border w-full rounded py-2 px-3 text-gray-700 focus:color-blue-800 mr-2" type="text" value={searchString} onInput={(evt) => setSearchString(evt.target.value)} />
-                <Button isSubmit>
-                    Søg mails
-                </Button>
-
-            </form>
-            <Collapsible collapsed={isFormCollapsed} onCollapse={(c) => setIsFormCollapsed(c)} buttonTitle="GDPR Søgning" >
+        <div className="">
+            <Button className={"float-right"} isSubmit onClick={() => fetchEmails()}>
+                Søg
+            </Button>
+            <Collapsible collapsed={collapsibleStates.form} onCollapse={(c) => setCollapsibleStates({...collapsibleStates, form: c})} buttonTitle="GDPR Søgning" >
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
                 <br />
                 <SourceCheckBox />
                 <br />
                 <p className="font-bold">Templates til søgning</p>
                 <KeywordListCheckBox onChange={(keywords) => setSearchString(keywords.join(" "))} />
-
             </Collapsible>
 
-            <Collapsible buttonTitle="Email">
-            <div className="w-full flex">
-                <div className="w-1/2 border-r-2 border-gray-200 overflow-auto">
-                    {emails?.map((r) => (
-                        <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
-                            <SearchResult
-                                subject={r.subject}
-                                body={r.body.content}
-                                search={r.search}
-                                preview
-                            />
-                        </div>
-                    ))}
-                </div>
-                <div className="w-1/2 ml-2">
-                    <SearchResult
-                        subject={selectedResult?.subject}
-                        body={selectedResult?.body?.content}
-                        search={selectedResult?.search}
-                        preview={false}
-                    />
-                </div>
+            <Collapsible buttonTitle="Email" collapsed={collapsibleStates.email} onCollapse={(c) => setCollapsibleStates({...collapsibleStates, email: c})} >
+                <div className="w-full flex max-h-screen">
+                    <div className="w-1/2 border-r-2 border-gray-200 overflow-y-scroll">
+                        {emails?.map((r) => (
+                            <div className="hover:bg-gray-200 cursor-pointer" key={r.id} onClick={() => setSelectedResult(r)}>
+                                <SearchResult
+                                    subject={r.subject}
+                                    body={r.body.content}
+                                    search={r.search}
+                                    preview
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="w-1/2 ml-2 overflow-y-scroll">
+                        <SearchResult
+                            subject={selectedResult?.subject}
+                            body={selectedResult?.body?.content}
+                            search={selectedResult?.search}
+                            preview={false}
+                        />
+                    </div>
                 </div>
             </Collapsible>
         </div>
