@@ -30,11 +30,11 @@ namespace GatApi.Controllers
 
             List<KeywordListViewModel> keywordListViewModels = new List<KeywordListViewModel>();
 
-            foreach(KeywordList k in keywordList)
+            foreach(KeywordList kl in keywordList)
             {
                 KeywordListViewModel keywordListViewModel = new KeywordListViewModel();
-                keywordListViewModel.Name = k.Name;
-                foreach(KeywordListHasKeyword klhk in k.KeywordListHasKeywords)
+                keywordListViewModel.Name = kl.Name;
+                foreach(KeywordListHasKeyword klhk in kl.KeywordListHasKeywords)
                 {
                     keywordListViewModel.Keywords.Add(klhk.Keyword.Word);
                 }
