@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatApi", "GatApi\GatApi.csproj", "{F454D15F-392A-493A-AB76-CFD36FBD935E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatApi", "GatApi\GatApi.csproj", "{F454D15F-392A-493A-AB76-CFD36FBD935E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatApiTests", "GatApiTests\GatApiTests.csproj", "{54CCE2C7-54D1-4B8E-9814-409A21B9F65E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F454D15F-392A-493A-AB76-CFD36FBD935E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F454D15F-392A-493A-AB76-CFD36FBD935E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F454D15F-392A-493A-AB76-CFD36FBD935E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54CCE2C7-54D1-4B8E-9814-409A21B9F65E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54CCE2C7-54D1-4B8E-9814-409A21B9F65E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54CCE2C7-54D1-4B8E-9814-409A21B9F65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54CCE2C7-54D1-4B8E-9814-409A21B9F65E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

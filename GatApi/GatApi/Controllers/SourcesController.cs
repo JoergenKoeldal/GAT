@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GatApi.Data;
 using GatApi.Models;
+using GatApi.Services;
 
 namespace GatApi.Controllers
 {
@@ -23,14 +24,14 @@ namespace GatApi.Controllers
 
         // GET: api/Sources
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Source>>> GetSource()
+        public async Task<ActionResult<IEnumerable<Source>>> GetSources()
         {
             return await _context.Source.ToListAsync();
         }
 
         // GET: api/Sources/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Source>> GetSource(long id)
+        public async Task<ActionResult<Source>> GetSources(long id)
         {
             var source = await _context.Source.FindAsync(id);
 
