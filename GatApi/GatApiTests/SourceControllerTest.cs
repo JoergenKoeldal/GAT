@@ -78,7 +78,7 @@ namespace GatApiTests
 
             Source source = new Source { SourceId = 5, Name = "test5" };
             await sourcesController.PostSource(source);
-            var actualSourceCount = await context.Source.CountAsync();
+            int actualSourceCount = await context.Source.CountAsync();
             Assert.Equal(Sources.Count + 1, actualSourceCount);
         }
 

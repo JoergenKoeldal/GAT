@@ -65,7 +65,10 @@ namespace GatApi.Services
 
                 List<Cleanup> cleanupList = _context.Cleanup.Where(x => x.User.UserId == user.UserId && x.Timestamp > currentSchedule.StartDate && x.Timestamp < currentSchedule.EndDate).Include(cleanup => cleanup.Source).ToList();
 
-
+                if(user.UserId == 1)
+                {
+                    var stop = 1;
+                }
                 foreach (Cleanup cleanup in cleanupList)
                 {
                     switch (cleanup.Source.Name)
