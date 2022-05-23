@@ -7,8 +7,7 @@ import Collapsible from "../util/collapsible";
 import Tag from "../util/tag";
 
 export default function KeywordListCheckBox({ onChange }) {
-
-    const [keywordList, setKeywordList] = useState([])
+    const [keywordList, setKeywordList] = useState([]);
     const [checkBoxChecked, setcheckBoxState] = useState([]);
 
     useEffect(() => {
@@ -24,7 +23,7 @@ export default function KeywordListCheckBox({ onChange }) {
         checkboxes.push(
             <div key={e.name} className="flex my-2">
                 <input className="w-5 h-5 mr-2" type="checkbox" value={e.name} checked={checkBoxChecked.includes(e.name)} onChange={checkBoxState} />
-                <Collapsible buttonTitle={e.name} initiallyCollapsed={true}>
+                <Collapsible buttonTitle={e.name} initiallyCollapsed>
                     <div className="flex space-x-2">
                         {e.keywords.map((k) => (
                             <Tag key={k}>
@@ -41,19 +40,18 @@ export default function KeywordListCheckBox({ onChange }) {
         let newCheckBoxState;
 
         if (evt.target.checked) {
-            //Tager checkbox staten, pakker alle elementerne ud (de 3 punktummer), og til sidst sættes det sidste element på
-            newCheckBoxState = [...checkBoxChecked, evt.target.value]
+            // Tager checkbox staten, pakker alle elementerne ud (de 3 punktummer), og til sidst sï¿½ttes det sidste element pï¿½
+            newCheckBoxState = [...checkBoxChecked, evt.target.value];
         } else {
-            //Filtrere den ikke markerede listes navne fra
-            newCheckBoxState = checkBoxChecked.filter((c) => c != evt.target.value)
+            // Filtrere den ikke markerede listes navne fra
+            newCheckBoxState = checkBoxChecked.filter((c) => c != evt.target.value);
         } setcheckBoxState(newCheckBoxState);
 
-        let keywords = []
+        let keywords = [];
         keywordList.filter((l) => newCheckBoxState.includes(l.name))
-            .forEach((l) => keywords = [...keywords, ...l.keywords])
+            .forEach((l) => keywords = [...keywords, ...l.keywords]);
 
-        
-        onChange(keywords)
+        onChange(keywords);
     }
 
     return (

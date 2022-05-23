@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-
-
-export default function Collapsible({ children, initiallyCollapsed, buttonTitle, collapsed, onCollapse }) {
+export default function Collapsible({
+    children, initiallyCollapsed, buttonTitle, collapsed, onCollapse,
+}) {
     const [isCollapsed, setIsCollapsed] = useState(initiallyCollapsed || false);
 
     function collaps() {
-        if(collapsed !== undefined){
+        if (collapsed !== undefined) {
             onCollapse(!collapsed);
-        }
-        else{
-            setIsCollapsed(!isCollapsed)
+        } else {
+            setIsCollapsed(!isCollapsed);
         }
     }
 
@@ -29,14 +28,12 @@ export default function Collapsible({ children, initiallyCollapsed, buttonTitle,
         <div>
             <div className="w-full cursor-pointer" onClick={() => collaps()}>
                 <span className="mr-2">
-                    {buttonTitle} 
+                    {buttonTitle}
                 </span>
-                { (actuallyCollapsed ?
-                    <FontAwesomeIcon size="1x" icon={faAngleDown}/>
-                    :
-                    <FontAwesomeIcon size="1x" icon={faAngleUp}/>
-                )
-                }
+                { (actuallyCollapsed
+                    ? <FontAwesomeIcon size="1x" icon={faAngleDown} />
+                    : <FontAwesomeIcon size="1x" icon={faAngleUp} />
+                )}
             </div>
             <div style={contentStyle}>
                 {children}

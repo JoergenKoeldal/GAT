@@ -1,41 +1,17 @@
-import React, {
-    useState, useEffect,
-} from "react";
+import React from "react";
 
-import { getSources } from "../apiService";
-
-export default function SourceCheckBox() {
-    const [sources, setSources] = useState([]);
-    const [checkBoxChecked, setcheckBoxState] = useState([]);
-
-    useEffect(() => {
-        const fetchSources = async () => {
-            const sources = await getSources();
-            setSources(sources);
-        };
-        fetchSources();
-    }, []);
+export default function SourceCheckBox({ sources, onChange }) {
+    sources = sources === undefined ? [] : sources;
 
     const checkboxes = [];
     sources.forEach((e) => {
         checkboxes.push(
             <label key={e.sourceId}>
                 {e.name}
-                <input type="checkbox" value={e.name} checked={checkBoxChecked.includes(`${e.name}`)} onChange={checkBoxState} />
+                <input type="checkbox" value={e.name} checked={e.checked} onChange={() => onChange(e)} />
             </label>,
         );
     });
-
-    function checkBoxState(evt) {
-        if (evt.target.checked) {
-            // Tager checkbox staten, pakker alle elementerne ud (de 3 punktummer), og til sidst s�ttes det sidste element p�
-            setcheckBoxState([...checkBoxChecked, evt.target.value]);
-        } else {
-            // Filtrere den ikke markerede listes navne fra
-            setcheckBoxState(checkBoxChecked.filter((c) => c != evt.target.value));
-        }
-    }
-
 
     return (
         <div>

@@ -1,31 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function Button({ onClick, children, isSubmit, className, color, size }) {
+function Button({
+    onClick, children, isSubmit, className, color, size,
+}) {
     let classes = "";
-    switch(color){
-        case "red":
-            classes = "bg-red-700 text-white hover:bg-red-800";
-            break;
-        case "blue":
-        default:
-            classes = "bg-blue-700 text-white hover:bg-blue-800";
+    switch (color) {
+    case "red":
+        classes = "bg-red-700 text-white hover:bg-red-800";
+        break;
+    case "blue":
+    default:
+        classes = "bg-blue-700 text-white hover:bg-blue-800";
     }
-    switch(size){
-        case "lg":
-            classes += " text-lg p-2"
-            break;
-        case "sm":
-            classes += " text-sm p-1"
-            break;
-        case "xs":
-            classes += " text-xs p-1"
-            break;
-        case "md":
-        default:
-            classes += " text-md p-2"
+    switch (size) {
+    case "lg":
+        classes += " text-lg p-2";
+        break;
+    case "sm":
+        classes += " text-sm p-1";
+        break;
+    case "xs":
+        classes += " text-xs p-1";
+        break;
+    case "md":
+    default:
+        classes += " text-md p-2";
     }
-    classes += " rounded " + className;
+    classes += ` rounded ${className}`;
     return (
         <button className={classes} type={isSubmit ? "submit" : "button"} onClick={onClick}>
             {children}

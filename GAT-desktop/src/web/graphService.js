@@ -34,16 +34,22 @@ export async function getUserMails(authProvider, { search }) {
         .count(true) // Count the total number of results
         .get();
     mails.value = mails.value.map((m) => ({ search: kqlSearch(search, m), ...m }));
+    mails.value.sort((a, b) => {
+        let aVal = a.search.body?.length || 0;
+        aVal += a.search.subject?.length || 0;
+        let bVal = b.search.body?.length || 0;
+        bVal += b.search.subject?.length || 0;
+        return bVal - aVal;
+    });
 
     return mails;
 }
 
-export async function deleteUserMail(authProvider, emailId){
+export async function deleteUserMail(authProvider, emailId) {
     ensureClient(authProvider);
     try {
         await graphClient.api(`/me/messages/${emailId}`).delete();
-    }
-    catch(err){
+    } catch (err) {
         return false;
     }
     return true;

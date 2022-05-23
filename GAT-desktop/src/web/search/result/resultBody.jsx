@@ -7,7 +7,7 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
     let html = "";
     let currentIndex = 0;
 
-    if(preview){
+    if (preview) {
         highlightIndexes?.forEach(({ start, stop }) => {
             html += `
                 ${body.substring(start - 30, start)}
@@ -17,8 +17,7 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
             `;
             currentIndex = stop;
         });
-    }
-    else {
+    } else {
         highlightIndexes?.forEach(({ start, stop }) => {
             html += `
                 ${body.substring(currentIndex, start)}
@@ -39,7 +38,6 @@ export default function ResultBody({ body, highlightIndexes, preview }) {
     }
 
     return (
-        <div className="flex flex-wrap" dangerouslySetInnerHTML={{ __html: html }}>
-        </div>
+        <div className="flex flex-wrap" dangerouslySetInnerHTML={{ __html: html }} />
     );
 }

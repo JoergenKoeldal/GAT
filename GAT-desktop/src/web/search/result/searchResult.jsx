@@ -9,7 +9,7 @@ export default function SearchResult({
     return (
         <div>
             <ResultSubject subject={subject} highlightIndexes={search?.subject} />
-            {preview 
+            {preview
                 ? ""
                 : <ResultBody body={body} highlightIndexes={search?.body} preview={preview} /> }
         </div>
