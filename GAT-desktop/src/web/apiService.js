@@ -24,4 +24,28 @@ export async function getDepartments() {
     return await response.json();
 }
 
+export async function getJNDataUser(email) {
+    const response = await fetch(`https://jnapi.azurewebsites.net/api/users/${email}`, { headers: { "Content-Type": "application/json" } });
+    return await response.json();
+}
+
+export async function postSearch(body){
+    const response = await fetch(
+        "https://jnapi.azurewebsites.net/api/Cleanups", 
+        { 
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: { "Content-Type": "application/json",  } 
+        });
+}
+
+export async function postCompleteGDPR(userId){
+    const response = await fetch(
+        `https://jnapi.azurewebsites.net/api/UserFinishedSchedules?userId=${userId}`, 
+        { 
+            method: "POST",
+            headers: { "Content-Type": "application/json",  } 
+        });
+}
+
 // CSP - Content Security Policy

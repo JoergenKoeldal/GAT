@@ -10,7 +10,7 @@ import KeywordListCheckBox from "./keywordCheckBox";
 import SourceCheckBox from "./sourceCheckBox";
 import SearchResult from "./result/searchResult";
 
-import { getSources } from "../apiService";
+import { getJNDataUser, getSources, postCompleteGDPR, postSearch } from "../apiService";
 
 export default function Search() {
     const appContext = useAppContext();
@@ -20,14 +20,33 @@ export default function Search() {
         form: false, email: true, cdrive: true, teams: true, skype: true,
     });
     const [searchString, setSearchString] = useState("");
+    const [searchStringCustom, setSearchStringCustom] = useState("");
     const [sources, setSources] = useState([]);
+    const [user, setUser] = useState({});
+
 
     const fetchEmails = () => {
-        const search = searchString.split(" ").reduce((wholeSearch, currentword) => `${wholeSearch}body: ${currentword} OR subject: ${currentword} OR `, "");
+        let fullSearchString = searchString; 
+        if(searchStringCustom.length > 0){
+            fullSearchString += " " + searchStringCustom;
+        }
+        const search = fullSearchString.split(" ").reduce((wholeSearch, currentword) => `${wholeSearch}body: ${currentword} OR subject: ${currentword} OR `, "");
         // Tager længden af stringen og fjerner de sidste 4 characters for at undgå problemet med OR i slutningen af stringen
         getUserMails(appContext.user, { search: search.substring(0, search.length - 4) })
             .then((res) => {
                 setEmails(res.value);
+
+                sources.forEach(s => {
+                    if(s.checked){
+                        const body = {
+                            userId: user.userId,
+                            sourceId: s.sourceId,
+                            hits: s.name === "Email" ? res.value.length : 0,
+                            deleted: 0
+                        };
+                        postSearch(body);
+                    }
+                })
             });
         setCollapsibleStates({ ...collapsibleStates, form: true, email: false });
     };
@@ -50,6 +69,13 @@ export default function Search() {
         };
         fetchSources();
     }, []);
+
+    useEffect(() => {
+        const fetchUser = () => {
+            getJNDataUser(appContext.user?.email).then(u => setUser(u));
+        }
+        fetchUser();
+    }, [appContext.user])
 
     const deleteEmal = (id, subject) => {
         if(!confirm(`Er du sikker på at du vil slette '${subject}'?`)){
@@ -138,15 +164,31 @@ export default function Search() {
                 buttonTitle="GDPR Søgning"
                 bordered={true}
             >
-                <Button className="float-right" isSubmit onClick={() => fetchEmails()}>
-                    Søg
-                </Button>
+                    <Button 
+                        className="float-right" 
+                        color= {"green"}
+                        onClick={() => { 
+                            if(confirm("Er du sikker på at du vil færdiggøre din GDPR?")) {
+                                postCompleteGDPR(user.userId);
+                            }
+                        }}>
+                        Færdiggør GDPR
+                    </Button>
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
                 <br />
                 <SourceCheckBox sources={sources} onChange={(i) => checkSource(i)} />
                 <br />
                 <p className="font-bold">Templates til søgning</p>
                 <KeywordListCheckBox onChange={(keywords) => setSearchString(keywords.join(" "))} />
+                <label className="font-bold">
+                    Brugerdefinerede søgeord:
+                </label>
+                <div className="flex">
+                    <input className="w-full border-2 border-gray-200 p-1 mr-2 bg-white rounded" type="text" value={searchStringCustom} onChange={(evt) => setSearchStringCustom(evt.target.value)}/>
+                    <Button className="float-right" isSubmit onClick={() => fetchEmails()}>
+                        Søg
+                    </Button>
+                </div>
             </Collapsible>
 
             {renderEmailCheckBox()}

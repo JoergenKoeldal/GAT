@@ -6,12 +6,15 @@ function Button({
 }) {
     let classes = "";
     switch (color) {
-    case "red":
-        classes = "bg-red-700 text-white hover:bg-red-800";
-        break;
-    case "blue":
-    default:
-        classes = "bg-blue-700 text-white hover:bg-blue-800";
+        case "green":
+            classes = "bg-emerald-700 text-white hover:bg-emerald-800";
+            break;
+        case "red":
+            classes = "bg-red-700 text-white hover:bg-red-800";
+            break;
+        case "stone":
+        default:
+            classes = "bg-stone-500 text-white hover:bg-stone-600";
     }
     switch (size) {
     case "lg":

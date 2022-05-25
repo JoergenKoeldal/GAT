@@ -30,7 +30,6 @@ function useProvideAppContext() {
 
     useEffect(() => {
         const checkUser = async () => {
-            // console.log("user before", user);
             if (inProgress === InteractionType.None && accounts.length > 0) {
                 if (user) {
                     return;
@@ -39,7 +38,7 @@ function useProvideAppContext() {
                     // Check if user is already signed in
                     const account = instance.getActiveAccount();
                     if (account) {
-                    // // Get the user from Microsoft Graph
+                    // Get the user from Microsoft Graph
                         const u = await getUser(authProvider);
 
                         setUser({
