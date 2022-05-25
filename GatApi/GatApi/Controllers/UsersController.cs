@@ -36,7 +36,7 @@ namespace GatApi.Controllers
         [HttpGet("{email}")]
         public async Task<ActionResult<UserViewModel>> GetUser(string email)
         {
-            var user = await _context.User.Where(x => x.Email == email).ToListAsync();
+            var user = await _context.User.Where(x => x.Email == email).Include("Department").ToListAsync();
 
             if (user == null)
             {

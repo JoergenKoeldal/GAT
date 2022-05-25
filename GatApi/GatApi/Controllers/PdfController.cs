@@ -21,7 +21,11 @@ namespace GatApi.Controllers
 
             MemoryStream ms = await pdfService.GetPdf(departmentId);
 
-            return new FileStreamResult(ms, "application/pdf");
+            var fileStreamResult = new FileStreamResult(ms, "application/pdf");
+
+            //fileStreamResult.FileDownloadName = "Hans";
+
+            return fileStreamResult;
 
         }
 
