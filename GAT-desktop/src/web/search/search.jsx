@@ -67,7 +67,12 @@ export default function Search() {
             return "";
         }
         return (
-            <Collapsible buttonTitle="Email" collapsed={collapsibleStates.email} onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, email: c })}>
+            <Collapsible 
+                bordered={true} 
+                buttonTitle="Email" 
+                collapsed={collapsibleStates.email} 
+                onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, email: c })}
+            >
                 <div className="w-full flex max-h-screen">
                     <div className="w-1/2 border-r-2 border-gray-200 overflow-y-scroll">
                         {emails?.map((r) => (
@@ -99,7 +104,12 @@ export default function Search() {
 
     return (
         <div className="">
-            <Collapsible collapsed={collapsibleStates.form} onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, form: c })} buttonTitle="GDPR Søgning">
+            <Collapsible 
+                collapsed={collapsibleStates.form} 
+                onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, form: c })} 
+                buttonTitle="GDPR Søgning"
+                bordered={true}
+            >
                 <Button className="float-right" isSubmit onClick={() => fetchEmails()}>
                     Søg
                 </Button>
@@ -115,18 +125,33 @@ export default function Search() {
 
             {
                 shouldSourceRender("C-drev")
-                    ? <Collapsible buttonTitle="C-drev" collapsed={collapsibleStates.cdrive} onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, cdrive: c })} />
+                    ? 
+                    <Collapsible 
+                        bordered={true} 
+                        buttonTitle="C-drev" 
+                        collapsed={collapsibleStates.cdrive} 
+                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, cdrive: c })} />
                     : ""
             }
 
             {
                 shouldSourceRender("Teams")
-                    ? <Collapsible buttonTitle="Teams" collapsed={collapsibleStates.teams} onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, teams: c })} />
+                    ? 
+                    <Collapsible 
+                        bordered={true} 
+                        buttonTitle="Teams" 
+                        collapsed={collapsibleStates.teams} 
+                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, teams: c })} />
                     : ""
             }
             {
                 shouldSourceRender("Skype")
-                    ? <Collapsible buttonTitle="Skype" collapsed={collapsibleStates.skype} onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, skype: c })} />
+                    ? 
+                    <Collapsible 
+                        bordered={true} 
+                        buttonTitle="Skype" 
+                        collapsed={collapsibleStates.skype} 
+                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, skype: c })} />
                     : ""
             }
         </div>

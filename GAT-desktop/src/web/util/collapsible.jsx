@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function Collapsible({
-    children, initiallyCollapsed, buttonTitle, collapsed, onCollapse,
+    children, initiallyCollapsed, buttonTitle, collapsed, onCollapse, bordered
 }) {
     const [isCollapsed, setIsCollapsed] = useState(initiallyCollapsed || false);
+    bordered = bordered === undefined ? false : bordered;
 
     function collaps() {
         if (collapsed !== undefined) {
@@ -25,7 +26,7 @@ export default function Collapsible({
     }
 
     return (
-        <div>
+        <div className={bordered ? "border-2 border-gray-200 p-2 my-2" : ""}>
             <div className="w-full cursor-pointer" onClick={() => collaps()}>
                 <span className="mr-2">
                     {buttonTitle}
