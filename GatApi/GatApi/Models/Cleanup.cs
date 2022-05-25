@@ -9,6 +9,8 @@ namespace GatApi.Models
 
         [Required]
         public User User { get; set; }
+        [Required]
+        public long UserId { get; set; }
 
         [DataType(DataType.DateTime)]
         [Required]
@@ -16,6 +18,8 @@ namespace GatApi.Models
 
         [Required]
         public Source Source { get; set; }
+        [Required]
+        public long SourceId { get; set; }
 
         [Required]
         public int Hits { get; set; }

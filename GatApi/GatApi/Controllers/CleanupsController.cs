@@ -28,18 +28,20 @@ namespace GatApi.Controllers
         {
             var cleanups = await _context.Cleanup.ToListAsync();
 
-            List<CleanupViewModel> result = new List<CleanupViewModel>();
+            List<CleanupViewModel> cleanupViewModels = new List<CleanupViewModel>();
 
             foreach(Cleanup c in cleanups)
             {
                 CleanupViewModel cleanupViewModel = new CleanupViewModel
                 {
-                    UserId = c.User.UserId,
-
+                    UserId = c.UserId,
+                    Deleted = c.Deleted,
+                    Hits = c.Hits,
+                    SourceId = c.SourceId
                 };
-                result.Add(cleanupViewModel);
+                cleanupViewModels.Add(cleanupViewModel);
             }
-            return result;
+            return cleanupViewModels;
         }
 
         // GET: api/Cleanups/5
@@ -90,8 +92,17 @@ namespace GatApi.Controllers
         // POST: api/Cleanups
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cleanup>> PostCleanup(Cleanup cleanup)
+        public async Task<ActionResult<Cleanup>> PostCleanup(CleanupViewModel cleanupViewModel)
         {
+            Cleanup cleanup = new Cleanup
+            {
+                UserId = cleanupViewModel.UserId,
+                SourceId = cleanupViewModel.SourceId,
+                Deleted = cleanupViewModel.Deleted,
+                Hits = cleanupViewModel.Hits,
+                Timestamp = DateTime.Now
+            };
+
             _context.Cleanup.Add(cleanup);
             await _context.SaveChangesAsync();
 
