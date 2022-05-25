@@ -51,7 +51,10 @@ export default function Search() {
         fetchSources();
     }, []);
 
-    const deleteEmal = (id) => {
+    const deleteEmal = (id, subject) => {
+        if(!confirm(`Er du sikker på at du vil slette '${subject}'?`)){
+            return;
+        }
         deleteUserMail(appContext.user, id)
             .then((res) => {
                 if (res) {
@@ -75,19 +78,44 @@ export default function Search() {
             >
                 <div className="w-full flex max-h-screen">
                     <div className="w-1/2 border-r-2 border-gray-200 overflow-y-scroll">
-                        {emails?.map((r) => (
-                            <div className="flex py-1" key={r.id}>
-                                <Button color="red" size="xs" onClick={() => deleteEmal(r.id)}>Slet</Button>
-                                <div className="hover:bg-gray-200 cursor-pointer pl-2 w-full" key={r.id} onClick={() => setSelectedResult(r)}>
-                                    <SearchResult
-                                        subject={r.subject}
-                                        body={r.body.content}
-                                        search={r.search}
-                                        preview
-                                    />
-                                </div>
-                            </div>
-                        ))}
+                        {
+                            emails?.map((r) => {
+                                let resultColor;
+                                if(r.sortVal > 10){
+                                    resultColor = "hover:bg-red-200 bg-red-100";
+                                }
+                                else if(r.sortVal > 5 ){
+                                    resultColor = "hover:bg-yellow-200 bg-yellow-100";
+                                }
+                                else {
+                                    resultColor = "hover:bg-gray-200 bg-gray-50 bg-white";
+                                }
+
+                                return (
+                                    <div className="flex py-1" key={r.id}>
+                                        <Button 
+                                            color="red" 
+                                            size="xs" 
+                                            onClick={() => deleteEmal(r.id, r.subject)}
+                                        >
+                                            Slet
+                                        </Button>
+                                        <div 
+                                            className={ resultColor + " cursor-pointer pl-2 w-full" } 
+                                            key={r.id} 
+                                            onClick={() => setSelectedResult(r)}
+                                        >
+                                            <SearchResult
+                                                subject={r.subject}
+                                                body={r.body.content}
+                                                search={r.search}
+                                                preview
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
                     <div className="w-1/2 ml-2 overflow-y-scroll">
                         <SearchResult

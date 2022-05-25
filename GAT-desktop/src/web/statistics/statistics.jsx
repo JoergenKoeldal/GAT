@@ -1,5 +1,42 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {getDepartments} from "../apiService";
 
 export default function Statistics() {
-    return <h1>Statistik Siden, yay :D</h1>;
+    const [ departments, setDepartments ] = useState([]);
+
+
+    useEffect(() => {
+        const fetchDepartments = () => {
+            getDepartments().then((res) => setDepartments(res));
+        }
+        fetchDepartments();
+    }, []);
+    console.log(departments);
+
+    return (
+        <div className="border-2 border-gray-200 bg-gray-50 rounded p-2 mt-2">
+            <h1 className="text-3xl font-bold">Statistik</h1>
+            <h2 className="text-2xl">
+                Afdelinger
+            </h2>
+            {
+                departments.map(d => {
+                    return (
+                        <div key={d.departmentId} className="my-2">
+                            <h4 className="text-xl" >
+                                {d.name}
+                            </h4>
+                            <a 
+                                className="text-blue-300" 
+                                href={ `https://jnapi.azurewebsites.net/api/Pdf?departmentId=${d.departmentId}` } 
+                                target={"_blank"}
+                            >
+                                Generer PDF
+                            </a>
+                        </div>
+                    );
+                })
+            }
+        </div>
+    );
 }

@@ -16,8 +16,12 @@ export async function getKeywordLists() {
 
 // gets all keywords from the API
 export async function generatePdf() {
-    debugger;
     const response = await fetch("https://jnapi.azurewebsites.net/api/pdf", { headers: { "Content-Type": "application/json" } });
+}
+
+export async function getDepartments() {
+    const response = await fetch("https://jnapi.azurewebsites.net/api/departments", { headers: { "Content-Type": "application/json" } });
+    return await response.json();
 }
 
 // CSP - Content Security Policy

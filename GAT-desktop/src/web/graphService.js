@@ -33,13 +33,21 @@ export async function getUserMails(authProvider, { search }) {
         .top(20) // return top 20
         .count(true) // Count the total number of results
         .get();
-    mails.value = mails.value.map((m) => ({ search: kqlSearch(search, m), ...m }));
+    mails.value = mails.value.map((m) => {
+        const searchKql = kqlSearch(search, m);
+
+        let sortVal = searchKql.body?.length || 0;
+        sortVal += searchKql.subject?.length || 0;
+        sortVal += m.hasAttachments ? 5 : 0 
+
+        return { 
+            search: searchKql, 
+            sortVal, 
+            ...m 
+        };
+    });
     mails.value.sort((a, b) => {
-        let aVal = a.search.body?.length || 0;
-        aVal += a.search.subject?.length || 0;
-        let bVal = b.search.body?.length || 0;
-        bVal += b.search.subject?.length || 0;
-        return bVal - aVal;
+        return b.sortVal - a.sortVal;
     });
 
     return mails;

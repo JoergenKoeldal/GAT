@@ -26,7 +26,7 @@ export default function Collapsible({
     }
 
     return (
-        <div className={bordered ? "border-2 border-gray-200 p-2 my-2" : ""}>
+        <div className={bordered ? "border-2 border-gray-200 p-2 my-2 bg-gray-50" : ""}>
             <div className="w-full cursor-pointer" onClick={() => collaps()}>
                 <span className="mr-2">
                     {buttonTitle}

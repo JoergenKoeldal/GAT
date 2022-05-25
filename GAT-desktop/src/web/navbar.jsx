@@ -12,7 +12,7 @@ export default function Navbar() {
 
     return (
         <div>
-            <nav className="bg-white border-gray-200 px-2 py-2.5 rounded">
+            <nav className="bg-white border-b-2 border-gray-200 px-2 py-2.5 rounded">
                 <div className="container flex flex-row justify-between items-center mx-auto">
                     <a href="/" className="flex items-center">
                         <span className="self-center text-xl font-semibold whitespace-nowrap">GAT</span>
