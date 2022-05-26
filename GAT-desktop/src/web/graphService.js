@@ -17,7 +17,7 @@ export async function getUser(authProvider) {
     ensureClient(authProvider);
     // Return the /me API endpoint result as a User object
     const user = await graphClient.api("/me")
-        .select("displayName,mail,mailboxSettings,userPrincipalName")
+        .select("displayName,mail,userPrincipalName")
         .get();
     return user;
 }
