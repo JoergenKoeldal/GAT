@@ -15,14 +15,14 @@ import { getUser } from "./graphService";
 const appContext = createContext();
 
 function useProvideAppContext() {
-    const { instance, accounts, inProgress } = useMsal();
+    const { instance: msalInstance, accounts, inProgress } = useMsal();
 
     const [user, setUser] = useState(undefined);
     // // Used by the Graph SDK to authenticate API calls
     const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
-        instance,
+        msalInstance,
         {
-            account: instance.getActiveAccount(),
+            account: msalInstance.getActiveAccount(),
             scopes: config.scopes,
             interactionType: InteractionType.Popup,
         },
@@ -36,7 +36,7 @@ function useProvideAppContext() {
                 }
                 try {
                     // Check if user is already signed in
-                    const account = instance.getActiveAccount();
+                    const account = msalInstance.getActiveAccount();
                     if (account) {
                     // Get the user from Microsoft Graph
                         const u = await getUser(authProvider);
@@ -54,10 +54,10 @@ function useProvideAppContext() {
             }
         };
         checkUser();
-    }, [inProgress, accounts, instance]);
+    }, [inProgress, accounts, msalInstance]);
 
     const signIn = async () => {
-        await instance.loginRedirect({
+        await msalInstance.loginRedirect({
             scopes: config.scopes,
             prompt: "select_account",
         });
@@ -71,7 +71,7 @@ function useProvideAppContext() {
     };
 
     const signOut = async () => {
-        await instance.logout();
+        await msalInstance.logout();
         setUser(undefined);
     };
 
