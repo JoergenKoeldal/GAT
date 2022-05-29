@@ -23,8 +23,6 @@ namespace GatApi.Controllers
 
             var fileStreamResult = new FileStreamResult(ms, "application/pdf");
 
-            //fileStreamResult.FileDownloadName = "Hans";
-
             return fileStreamResult;
 
         }

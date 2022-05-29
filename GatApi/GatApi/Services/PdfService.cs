@@ -65,10 +65,6 @@ namespace GatApi.Services
 
                 List<Cleanup> cleanupList = _context.Cleanup.Where(x => x.User.UserId == user.UserId && x.Timestamp > currentSchedule.StartDate && x.Timestamp < currentSchedule.EndDate).Include(cleanup => cleanup.Source).ToList();
 
-                if(user.UserId == 1)
-                {
-                    var stop = 1;
-                }
                 foreach (Cleanup cleanup in cleanupList)
                 {
                     switch (cleanup.Source.Name)
@@ -97,7 +93,7 @@ namespace GatApi.Services
 
             PdfDocument pdf = new PdfDocument(new PdfWriter(baos));
             Document document = new Document(pdf);
-            Paragraph header = new Paragraph("GDPR for: " + currentScheduleDate.ToString("dd-MM-yyyy"))
+            Paragraph header = new Paragraph("GDPR Before: " + currentScheduleDate.ToString("dd-MM-yyyy"))
                .SetTextAlignment(TextAlignment.CENTER)
                .SetFontSize(20);
 
@@ -140,7 +136,7 @@ namespace GatApi.Services
 
             return data;
 
-            // ------------------- Local Methods -----------------
+            // ------------------- Local Functions -----------------
 
             Table CreateHeaders(Table table)
             {
@@ -160,41 +156,21 @@ namespace GatApi.Services
             {
                 foreach (PdfViewModel pvm in pdfViewModels)
                 {
+                    AddCell(pvm.Name);
+                    AddCell(pvm.CDrev);
+                    AddCell(pvm.Email);
+                    AddCell(pvm.Teams);
+                    AddCell(pvm.Skype);
+                    AddCell(pvm.IsScheduleFinished);
+                    AddCell(pvm.ScheduleFinishedAt);
 
-                    Cell nameCell = new Cell(2, 1)
+                    void AddCell(string cellValue)
+                    {
+                        Cell cell = new Cell(2,1)
                                  .SetTextAlignment(TextAlignment.CENTER)
-                                 .Add(new Paragraph(pvm.Name));
-                    table.AddCell(nameCell);
-
-                    Cell cDrevCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.CDrev));
-                    table.AddCell(cDrevCell);
-
-                    Cell emailCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.Email));
-                    table.AddCell(emailCell);
-
-                    Cell teamsCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.Teams));
-                    table.AddCell(teamsCell);
-
-                    Cell skypeCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.Skype));
-                    table.AddCell(skypeCell);
-
-                    Cell completedCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.IsScheduleFinished));
-                    table.AddCell(completedCell);
-
-                    Cell completedDateCell = new Cell(2, 1)
-                                .SetTextAlignment(TextAlignment.CENTER)
-                                .Add(new Paragraph(pvm.ScheduleFinishedAt));
-                    table.AddCell(completedDateCell);
+                                 .Add(new Paragraph(cellValue));
+                        table.AddCell(cell);
+                    }
                 }
                 return table;
             }
