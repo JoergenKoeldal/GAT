@@ -6,15 +6,15 @@ function Button({
 }) {
     let classes = "";
     switch (color) {
-        case "green":
-            classes = "bg-emerald-700 text-white hover:bg-emerald-800";
-            break;
-        case "red":
-            classes = "bg-red-700 text-white hover:bg-red-800";
-            break;
-        case "stone":
-        default:
-            classes = "bg-stone-500 text-white hover:bg-stone-600";
+    case "green":
+        classes = "bg-emerald-700 text-white hover:bg-emerald-800";
+        break;
+    case "red":
+        classes = "bg-red-700 text-white hover:bg-red-800";
+        break;
+    case "stone":
+    default:
+        classes = "bg-stone-500 text-white hover:bg-stone-600";
     }
     switch (size) {
     case "lg":
@@ -30,7 +30,7 @@ function Button({
     default:
         classes += " text-md p-2";
     }
-    classes += ` rounded ${className}`;
+    classes += ` rounded ${className !== undefined ? className : ""}`;
     return (
         <button className={classes} type={isSubmit ? "submit" : "button"} onClick={onClick}>
             {children}

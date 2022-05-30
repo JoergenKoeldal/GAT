@@ -10,7 +10,9 @@ import KeywordListCheckBox from "./keywordCheckBox";
 import SourceCheckBox from "./sourceCheckBox";
 import SearchResult from "./result/searchResult";
 
-import { getJNDataUser, getSources, postCompleteGDPR, postSearch } from "../apiService";
+import {
+    getJNDataUser, getSources, postCompleteGDPR, postSearch,
+} from "../apiService";
 
 export default function Search() {
     const appContext = useAppContext();
@@ -24,11 +26,10 @@ export default function Search() {
     const [sources, setSources] = useState([]);
     const [user, setUser] = useState({});
 
-
     const fetchEmails = () => {
-        let fullSearchString = searchString; 
-        if(searchStringCustom.length > 0){
-            fullSearchString += " " + searchStringCustom;
+        let fullSearchString = searchString;
+        if (searchStringCustom.length > 0) {
+            fullSearchString += ` ${searchStringCustom}`;
         }
         const search = fullSearchString.split(" ").reduce((wholeSearch, currentword) => `${wholeSearch}body: ${currentword} OR subject: ${currentword} OR `, "");
         // Tager længden af stringen og fjerner de sidste 4 characters for at undgå problemet med OR i slutningen af stringen
@@ -36,17 +37,17 @@ export default function Search() {
             .then((res) => {
                 setEmails(res.value);
 
-                sources.forEach(s => {
-                    if(s.checked){
+                sources.forEach((s) => {
+                    if (s.checked) {
                         const body = {
                             userId: user.userId,
                             sourceId: s.sourceId,
                             hits: s.name === "Email" ? res.value.length : 0,
-                            deleted: 0
+                            deleted: 0,
                         };
                         postSearch(body);
                     }
-                })
+                });
             });
         setCollapsibleStates({ ...collapsibleStates, form: true, email: false });
     };
@@ -72,13 +73,13 @@ export default function Search() {
 
     useEffect(() => {
         const fetchUser = () => {
-            getJNDataUser(appContext.user?.email).then(u => setUser(u));
-        }
+            getJNDataUser(appContext.user?.email).then((u) => setUser(u));
+        };
         fetchUser();
-    }, [appContext.user])
+    }, [appContext.user]);
 
     const deleteEmal = (id, subject) => {
-        if(!confirm(`Er du sikker på at du vil slette '${subject}'?`)){
+        if (!confirm(`Er du sikker på at du vil slette '${subject}'?`)) {
             return;
         }
         deleteUserMail(appContext.user, id)
@@ -96,10 +97,10 @@ export default function Search() {
             return "";
         }
         return (
-            <Collapsible 
-                bordered={true} 
-                buttonTitle="Email" 
-                collapsed={collapsibleStates.email} 
+            <Collapsible
+                bordered
+                buttonTitle="Email"
+                collapsed={collapsibleStates.email}
                 onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, email: c })}
             >
                 <div className="w-full flex max-h-screen">
@@ -107,28 +108,26 @@ export default function Search() {
                         {
                             emails?.map((r) => {
                                 let resultColor;
-                                if(r.sortVal > 10){
+                                if (r.sortVal > 10) {
                                     resultColor = "hover:bg-red-200 bg-red-100";
-                                }
-                                else if(r.sortVal > 5 ){
+                                } else if (r.sortVal > 5) {
                                     resultColor = "hover:bg-yellow-200 bg-yellow-100";
-                                }
-                                else {
+                                } else {
                                     resultColor = "hover:bg-gray-200 bg-gray-50 bg-white";
                                 }
 
                                 return (
                                     <div className="flex py-1" key={r.id}>
-                                        <Button 
-                                            color="red" 
-                                            size="xs" 
+                                        <Button
+                                            color="red"
+                                            size="xs"
                                             onClick={() => deleteEmal(r.id, r.subject)}
                                         >
                                             Slet
                                         </Button>
-                                        <div 
-                                            className={ resultColor + " cursor-pointer pl-2 w-full" } 
-                                            key={r.id} 
+                                        <div
+                                            className={`${resultColor} cursor-pointer pl-2 w-full`}
+                                            key={r.id}
                                             onClick={() => setSelectedResult(r)}
                                         >
                                             <SearchResult
@@ -158,22 +157,23 @@ export default function Search() {
 
     return (
         <div className="">
-            <Collapsible 
-                collapsed={collapsibleStates.form} 
-                onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, form: c })} 
+            <Collapsible
+                collapsed={collapsibleStates.form}
+                onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, form: c })}
                 buttonTitle="GDPR Søgning"
-                bordered={true}
+                bordered
             >
-                    <Button 
-                        className="float-right" 
-                        color= {"green"}
-                        onClick={() => { 
-                            if(confirm("Er du sikker på at du vil færdiggøre din GDPR?")) {
-                                postCompleteGDPR(user.userId);
-                            }
-                        }}>
-                        Færdiggør GDPR
-                    </Button>
+                <Button
+                    className="float-right"
+                    color="green"
+                    onClick={() => {
+                        if (confirm("Er du sikker på at du vil færdiggøre din GDPR?")) {
+                            postCompleteGDPR(user.userId);
+                        }
+                    }}
+                >
+                    Færdiggør GDPR
+                </Button>
                 <p className="font-bold">Vælg hvilke områder der skal søges på</p>
                 <br />
                 <SourceCheckBox sources={sources} onChange={(i) => checkSource(i)} />
@@ -184,7 +184,7 @@ export default function Search() {
                     Brugerdefinerede søgeord:
                 </label>
                 <div className="flex">
-                    <input className="w-full border-2 border-gray-200 p-1 mr-2 bg-white rounded" type="text" value={searchStringCustom} onChange={(evt) => setSearchStringCustom(evt.target.value)}/>
+                    <input className="w-full border-2 border-gray-200 p-1 mr-2 bg-white rounded" type="text" value={searchStringCustom} onChange={(evt) => setSearchStringCustom(evt.target.value)} />
                     <Button className="float-right" isSubmit onClick={() => fetchEmails()}>
                         Søg
                     </Button>
@@ -195,33 +195,39 @@ export default function Search() {
 
             {
                 shouldSourceRender("C-drev")
-                    ? 
-                    <Collapsible 
-                        bordered={true} 
-                        buttonTitle="C-drev" 
-                        collapsed={collapsibleStates.cdrive} 
-                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, cdrive: c })} />
+                    ? (
+                        <Collapsible
+                            bordered
+                            buttonTitle="C-drev"
+                            collapsed={collapsibleStates.cdrive}
+                            onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, cdrive: c })}
+                        />
+                    )
                     : ""
             }
 
             {
                 shouldSourceRender("Teams")
-                    ? 
-                    <Collapsible 
-                        bordered={true} 
-                        buttonTitle="Teams" 
-                        collapsed={collapsibleStates.teams} 
-                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, teams: c })} />
+                    ? (
+                        <Collapsible
+                            bordered
+                            buttonTitle="Teams"
+                            collapsed={collapsibleStates.teams}
+                            onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, teams: c })}
+                        />
+                    )
                     : ""
             }
             {
                 shouldSourceRender("Skype")
-                    ? 
-                    <Collapsible 
-                        bordered={true} 
-                        buttonTitle="Skype" 
-                        collapsed={collapsibleStates.skype} 
-                        onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, skype: c })} />
+                    ? (
+                        <Collapsible
+                            bordered
+                            buttonTitle="Skype"
+                            collapsed={collapsibleStates.skype}
+                            onCollapse={(c) => setCollapsibleStates({ ...collapsibleStates, skype: c })}
+                        />
+                    )
                     : ""
             }
         </div>

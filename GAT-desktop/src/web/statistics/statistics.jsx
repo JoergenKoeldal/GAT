@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {getDepartments} from "../apiService";
+import React, { useEffect, useState } from "react";
+import { getDepartments } from "../apiService";
 
 export default function Statistics() {
-    const [ departments, setDepartments ] = useState([]);
-
+    const [departments, setDepartments] = useState([]);
 
     useEffect(() => {
         const fetchDepartments = () => {
             getDepartments().then((res) => setDepartments(res));
-        }
+        };
         fetchDepartments();
     }, []);
     console.log(departments);
@@ -20,22 +19,21 @@ export default function Statistics() {
                 Afdelinger
             </h2>
             {
-                departments.map(d => {
-                    return (
-                        <div key={d.departmentId} className="my-2">
-                            <h4 className="text-xl" >
-                                {d.name}
-                            </h4>
-                            <a 
-                                className="text-blue-300" 
-                                href={ `https://jnapi.azurewebsites.net/api/Pdf?departmentId=${d.departmentId}` } 
-                                target={"_blank"}
-                            >
-                                Generer PDF
-                            </a>
-                        </div>
-                    );
-                })
+                departments.map((d) => (
+                    <div key={d.departmentId} className="my-2">
+                        <h4 className="text-xl">
+                            {d.name}
+                        </h4>
+                        <a
+                            className="text-blue-300"
+                            href={`https://jnapi.azurewebsites.net/api/Pdf?departmentId=${d.departmentId}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Generer PDF
+                        </a>
+                    </div>
+                ))
             }
         </div>
     );

@@ -38,17 +38,15 @@ export async function getUserMails(authProvider, { search }) {
 
         let sortVal = searchKql.body?.length || 0;
         sortVal += searchKql.subject?.length || 0;
-        sortVal += m.hasAttachments ? 5 : 0 
+        sortVal += m.hasAttachments ? 5 : 0;
 
-        return { 
-            search: searchKql, 
-            sortVal, 
-            ...m 
+        return {
+            search: searchKql,
+            sortVal,
+            ...m,
         };
     });
-    mails.value.sort((a, b) => {
-        return b.sortVal - a.sortVal;
-    });
+    mails.value.sort((a, b) => b.sortVal - a.sortVal);
 
     return mails;
 }

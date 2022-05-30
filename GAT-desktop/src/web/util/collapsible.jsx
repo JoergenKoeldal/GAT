@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function Collapsible({
-    children, initiallyCollapsed, buttonTitle, collapsed, onCollapse, bordered
+    children, initiallyCollapsed, buttonTitle, collapsed, onCollapse, bordered,
 }) {
     const [isCollapsed, setIsCollapsed] = useState(initiallyCollapsed || false);
     bordered = bordered === undefined ? false : bordered;
