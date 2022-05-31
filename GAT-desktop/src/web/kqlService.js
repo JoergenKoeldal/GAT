@@ -43,7 +43,7 @@ export default function kqlSearch(kqlString, searchObj) {
             }
         });
         if (indexes.length > 0) {
-            result[key] = indexes;
+            result[key] = indexes.sort((a,b) => a.start - b.start);
         }
     });
     return result;
