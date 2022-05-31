@@ -1,4 +1,4 @@
-function parse(kqlString) {
+export function kqlParse(kqlString) {
     const pairs = kqlString.split(/OR|AND/);
     const kql = {};
     pairs.forEach((pair) => {
@@ -15,7 +15,7 @@ function parse(kqlString) {
 }
 
 export default function kqlSearch(kqlString, searchObj) {
-    const kql = parse(kqlString);
+    const kql = kqlParse(kqlString);
 
     const result = {};
 
@@ -28,9 +28,9 @@ export default function kqlSearch(kqlString, searchObj) {
         }
         searchString = searchString.toLowerCase();
         const indexes = [];
-        kql[key].forEach((val) => {
-            const { length } = val;
-            let index = searchString.indexOf(val);
+        kql[key].forEach((word) => {
+            const { length } = word;
+            let index = searchString.indexOf(word);
 
             while (index !== -1) {
                 indexes.push(
@@ -39,7 +39,7 @@ export default function kqlSearch(kqlString, searchObj) {
                         stop: index + length,
                     },
                 );
-                index = searchString.indexOf(val, index + 1);
+                index = searchString.indexOf(word, index + 1);
             }
         });
         if (indexes.length > 0) {

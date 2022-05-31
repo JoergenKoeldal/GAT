@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Electron desktop app for the GAT application",
   "main": "src/main.js",
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "scripts": {
     "test": "jest",
     "desktop": "electron .",
@@ -19,6 +22,7 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.16.7",
     "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
     "@types/electron": "^1.6.10",
     "autoprefixer": "^10.4.5",
     "babel-jest": "^28.1.0",
@@ -28,6 +32,7 @@
     "eslint-plugin-react": "^7.29.4",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",
