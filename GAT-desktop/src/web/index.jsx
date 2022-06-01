@@ -14,13 +14,16 @@ import "./assets/style.css"; // import css, required by tailwindcss
 const msalInstance = new PublicClientApplication({
     auth: {
         clientId: config.clientId,
-        redirectUri: config.redirectUri,
+        redirectUri: process.env.TARGET === "desktop" ? config.redirectUriDesktop : config.redirectUriWeb,
     },
     cache: {
         cacheLocation: "sessionStorage",
         storeAuthStateInCookie: true,
     },
 });
+
+console.log(process.env.TARGET === "desktop" ? config.redirectUriDesktop : config.redirectUriWeb);
+
 
 // Check if there are already accounts in the browser session
 // If so, set the first account as the active account
