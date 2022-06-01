@@ -2,6 +2,7 @@ import React, {
     useState, useEffect,
 } from "react";
 
+
 import { useAppContext } from "../appContext";
 import { deleteUserMail, getUserMails } from "../graphService";
 import Button from "../util/button";
@@ -134,6 +135,7 @@ export default function Search() {
                                                 subject={r.subject}
                                                 body={r.body.content}
                                                 search={r.search}
+                                                hasAttachments={r.hasAttachments}
                                                 preview
                                             />
                                         </div>
@@ -147,6 +149,7 @@ export default function Search() {
                             subject={selectedResult?.subject}
                             body={selectedResult?.body?.content}
                             search={selectedResult?.search}
+                            hasAttachments={selectedResult?.hasAttachments}
                             preview={false}
                         />
                     </div>

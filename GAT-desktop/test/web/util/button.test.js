@@ -11,6 +11,7 @@ describe("Test Button Component", () => {
         const button = renderer.create(<Button>{child}</Button>);
         expect(button.toJSON().children[0]).toEqual(child);
     });
+
     it('it calls supplied onclick method on click',  () => {
         const callBack = jest.fn();
         render(

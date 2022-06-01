@@ -1,6 +1,8 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
-export default function ResultSubject({ subject, highlightIndexes }) {
+export default function ResultSubject({ subject, hasAttachments, highlightIndexes }) {
     if (!subject) {
         return "";
     }
@@ -33,6 +35,7 @@ export default function ResultSubject({ subject, highlightIndexes }) {
     return (
         <div className="font-bold">
             {subjectElements}
+            {hasAttachments ? <FontAwesomeIcon className="float-right pt-1 pr-2" size="1x" icon={faPaperclip}/> : ""}
         </div>
     );
 }
