@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "jest",
-    "desktop": "electron .",
     "web": "cross-env TARGET=web webpack serve --mode=development",
+    "desktop": "npm run build-desktop && electron .",
     "build-desktop": "cross-env TARGET=desktop webpack --mode=development",
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix"

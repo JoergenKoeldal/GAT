@@ -1,15 +1,23 @@
-const path = require("path");
 const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
-const createWindow = () => {
-    const win = new BrowserWindow({
+app.whenReady().then(() => {
+    const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
     });
 
-    win.loadFile(path.join(__dirname, "../dist/index.html"));
-};
+    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
 
-app.whenReady().then(() => {
-    createWindow();
+    mainWindow.webContents.openDevTools();
+
+    mainWindow.webContents.on('will-redirect', (event, url) => {
+        mainWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
+            hash: url.split("#")[1]
+        } );
+    });
 });
+
+
+
+

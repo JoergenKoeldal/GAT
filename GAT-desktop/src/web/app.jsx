@@ -14,7 +14,6 @@ import Navbar from "./navbar";
 import Search from "./search/search";
 import Statistics from "./statistics/statistics";
 import Login from "./login/login";
-import NotFound from "./notFound/notFound";
 
 function App({ pca }) {
     return (
@@ -27,7 +26,6 @@ function App({ pca }) {
                             <Route path="/statistics" element={<Statistics />} />
                             <Route
                                 path="*"
-                                element={<NotFound />}
                             />
                         </Route>
                         <Route path="/login" element={<Login />} />

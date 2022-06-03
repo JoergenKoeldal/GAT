@@ -11,6 +11,7 @@ import App from "./app";
 
 import "./assets/style.css"; // import css, required by tailwindcss
 
+
 const msalInstance = new PublicClientApplication({
     auth: {
         clientId: config.clientId,
@@ -22,7 +23,6 @@ const msalInstance = new PublicClientApplication({
     },
 });
 
-console.log(process.env.TARGET === "desktop" ? config.redirectUriDesktop : config.redirectUriWeb);
 
 
 // Check if there are already accounts in the browser session
