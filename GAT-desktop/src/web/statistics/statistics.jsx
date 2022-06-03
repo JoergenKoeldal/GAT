@@ -10,7 +10,6 @@ export default function Statistics() {
         };
         fetchDepartments();
     }, []);
-    console.log(departments);
 
     return (
         <div className="border-2 border-gray-200 bg-gray-50 rounded p-2 mt-2">

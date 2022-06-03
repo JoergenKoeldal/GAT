@@ -13,22 +13,18 @@ import ProvideAppContext from "./appContext";
 import Navbar from "./navbar";
 import Search from "./search/search";
 import Statistics from "./statistics/statistics";
-import Login from "./login/login";
 
-function App({ pca }) {
+function App({ msalInstance }) {
     return (
-        <MsalProvider instance={pca}>
+        <MsalProvider instance={msalInstance}>
             <ProvideAppContext>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Navbar />}>
                             <Route path="/search" element={<Search />} />
                             <Route path="/statistics" element={<Statistics />} />
-                            <Route
-                                path="*"
-                            />
+                            <Route path="*"/>
                         </Route>
-                        <Route path="/login" element={<Login />} />
                     </Routes>
                 </BrowserRouter>
             </ProvideAppContext>
