@@ -87,7 +87,7 @@ export function useAppContext() {
     return useContext(appContext);
 }
 
-function ProvideAppContext({ children }) {
+export default function ProvideAppContext({ children }) {
     const auth = useProvideAppContext();
     return (
         <appContext.Provider value={auth}>
@@ -96,8 +96,3 @@ function ProvideAppContext({ children }) {
     );
 }
 
-ProvideAppContext.propTypes = {
-    children: PropTypes.instanceOf(Object).isRequired,
-};
-
-export default ProvideAppContext;

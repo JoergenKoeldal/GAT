@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../../util/button";
 import ResultBody from "./resultBody";
 import ResultSubject from "./resultSubject";
 
