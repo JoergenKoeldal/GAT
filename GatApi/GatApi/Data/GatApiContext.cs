@@ -34,7 +34,7 @@ namespace GatApi.Data
         public DbSet<Schedule> Schedule { get; set; }
         public DbSet<Source> Source { get; set; }
         public DbSet<UserFinishedSchedule> UserFinishedSchedule { get; set; }
-        public DbSet<GatApi.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
 
     }
 }

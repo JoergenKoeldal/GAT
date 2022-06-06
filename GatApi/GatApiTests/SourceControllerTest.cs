@@ -17,7 +17,7 @@ namespace GatApiTests
         public readonly SourcesController sourcesController;
         public readonly GatApiContext context;
 
-        public List<Source> Sources { get; set; } = new List<Source>();
+        public List<Source> SourceList { get; set; } = new List<Source>();
 
         //The constructor is called after each test, which makes it the "setup" call in Xunit
         public SourceControllerTest()
@@ -46,9 +46,9 @@ namespace GatApiTests
         }
 
         //Populate the db with some data
-        public async void AddSourcesToDb()
+        private async void AddSourcesToDb()
         {
-            Sources = new List<Source>
+            SourceList = new List<Source>
             {
                 new Source{ SourceId = 1, Name = "test1"},
                 new Source{ SourceId = 2, Name = "test2"},
@@ -56,7 +56,7 @@ namespace GatApiTests
                 new Source{ SourceId = 4, Name = "test4"},
             };
 
-            foreach (var source in Sources)
+            foreach (var source in SourceList)
             {
                 await sourcesController.PostSource(source);
             }
@@ -66,20 +66,23 @@ namespace GatApiTests
         [Fact]
         public async void GetSources()
         {
+            //Arrange
+            int sourceListCount = SourceList.Count;
+            //Act
             var sources = await sourcesController.GetSources();
-
-            var actualSourceCount = sources.Value.Count();
-
-            Assert.Equal(Sources.Count, actualSourceCount);
+            //Assert
+            Assert.Equal(sourceListCount, sources.Value.Count());
         }
         [Fact]
         public async void PostSource()
         {
 
             Source source = new Source { SourceId = 5, Name = "test5" };
+
             await sourcesController.PostSource(source);
             int actualSourceCount = await context.Source.CountAsync();
-            Assert.Equal(Sources.Count + 1, actualSourceCount);
+
+            Assert.Equal(SourceList.Count + 1, actualSourceCount);
         }
 
         [Fact]

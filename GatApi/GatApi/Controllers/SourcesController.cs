@@ -44,7 +44,6 @@ namespace GatApi.Controllers
         }
 
         // PUT: api/Sources/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSource(long id, Source source)
         {
@@ -75,14 +74,13 @@ namespace GatApi.Controllers
         }
 
         // POST: api/Sources
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Source>> PostSource(Source source)
         {
             _context.Source.Add(source);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSource", new { id = source.SourceId }, source);
+            return CreatedAtAction("GetSources", new { id = source.SourceId }, source);
         }
 
         // DELETE: api/Sources/5

@@ -12,9 +12,11 @@ namespace GatApi.Models
         [Required]
         public string Name { get; set; }
 
-
         [Required]
         public Department Department { get; set; }
+
+        [Required]
+        public long DepartmentId { get; set; }
 
         public IList<UserFinishedSchedule> UserFinishedSchedules { get; set; }
 

@@ -32,7 +32,7 @@ namespace GatApi.Controllers
             return userViewModels;
         }
 
-        // GET: api/Users/5
+        // GET: api/Users/email
         [HttpGet("{email}")]
         public async Task<ActionResult<UserViewModel>> GetUser(string email)
         {
