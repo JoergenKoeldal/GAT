@@ -18,12 +18,11 @@ namespace GatApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<KeywordListHasKeyword>()
-                .HasKey(nameof(KeywordListHasKeyword.KeywordId), nameof(KeywordListHasKeyword.KeywordListId));
+                .HasKey(klhk => new { klhk.KeywordId, klhk.KeywordListId });
 
             modelBuilder.Entity<UserFinishedSchedule>()
                 .HasKey(ufs => new { ufs.ScheduleId, ufs.UserId});
-
-           
+         
         }
 
         public DbSet<Department> Department { get; set; }

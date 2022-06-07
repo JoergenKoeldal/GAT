@@ -10,9 +10,9 @@ namespace GatApi.Controllers
     {
         private PdfService pdfService;
 
-        public PdfController(GatApiContext context)
+        public PdfController(PdfService pdfService)
         {
-            this.pdfService = new PdfService(context);
+            this.pdfService = pdfService;
         }
 
         [HttpGet]
