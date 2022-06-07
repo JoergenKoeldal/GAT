@@ -59,7 +59,6 @@ namespace GatApi.Controllers
         }
 
         // PUT: api/Cleanups/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCleanup(long id, Cleanup cleanup)
         {
@@ -90,7 +89,6 @@ namespace GatApi.Controllers
         }
 
         // POST: api/Cleanups
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Cleanup>> PostCleanup(CleanupViewModel cleanupViewModel)
         {

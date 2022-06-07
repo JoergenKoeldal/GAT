@@ -59,7 +59,6 @@ namespace GatApi.Controllers
         }
 
         // PUT: api/KeywordLists/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutKeywordList(long id, KeywordList keywordList)
         {
@@ -90,7 +89,6 @@ namespace GatApi.Controllers
         }
 
         // POST: api/KeywordLists
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<KeywordList>> PostKeywordList(KeywordList keywordList)
         {

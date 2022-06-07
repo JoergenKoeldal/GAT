@@ -43,7 +43,6 @@ namespace GatApi.Controllers
         }
 
         // PUT: api/UserFinishedSchedules/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserFinishedSchedule(long id, UserFinishedSchedule userFinishedSchedule)
         {
@@ -74,7 +73,6 @@ namespace GatApi.Controllers
         }
 
         // POST: api/UserFinishedSchedules
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<HttpResponseMessage>> PostUserFinishedSchedule(long userId)
         {
