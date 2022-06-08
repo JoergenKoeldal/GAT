@@ -9,8 +9,6 @@ app.whenReady().then(() => {
 
     mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
 
-    mainWindow.webContents.openDevTools();
-
     mainWindow.webContents.on('will-redirect', (event, url) => {
         mainWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
             hash: url.split("#")[1]
