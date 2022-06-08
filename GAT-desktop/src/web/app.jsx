@@ -22,6 +22,8 @@ function App({ msalInstance }) {
                         <Route path="/" element={<Navbar />}>
                             <Route path="/search" element={<Search />} />
                             <Route path="/statistics" element={<Statistics />} />
+                            <Route path="/C:/search" element={<Search />} />
+                            <Route path="/C:/statistics" element={<Statistics />} />
                             <Route path="*"/>
                         </Route>
                     </Routes>
