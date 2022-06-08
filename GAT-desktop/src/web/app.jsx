@@ -4,7 +4,6 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import "./assets/style.css"; // import css, required by tailwindcss
 
@@ -31,9 +30,5 @@ function App({ msalInstance }) {
         </MsalProvider>
     );
 }
-
-App.propTypes = {
-    pca: PropTypes.instanceOf(Object).isRequired,
-};
 
 export default App;
