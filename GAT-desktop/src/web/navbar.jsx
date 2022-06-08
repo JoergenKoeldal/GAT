@@ -19,8 +19,8 @@ export default function Navbar() {
                     </a>
                     <div className="mx-auto flex flex-row">
                         <div className="mx-auto">
-                            <Link to="/search" className="pr-4 pl-3 text-gray-700 hover:text-blue-800">Søg</Link>
-                            <Link to="/statistics" className="pr-4 pl-3 text-gray-700 hover:text-blue-850">Statistik</Link>
+                            <Link to="search" className="pr-4 pl-3 text-gray-700 hover:text-blue-800">Søg</Link>
+                            <Link to="statistics" className="pr-4 pl-3 text-gray-700 hover:text-blue-850">Statistik</Link>
                         </div>
                     </div>
                     <AuthenticatedTemplate>
