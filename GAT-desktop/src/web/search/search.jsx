@@ -26,6 +26,7 @@ export default function Search() {
     const [searchStringCustom, setSearchStringCustom] = useState("");
     const [sources, setSources] = useState([]);
     const [user, setUser] = useState({});
+    const [didSearch, setDidSearch] = useState(false);
 
     const fetchEmails = () => {
         let fullSearchString = searchString;
@@ -51,6 +52,7 @@ export default function Search() {
                 });
             });
         setCollapsibleStates({ ...collapsibleStates, form: true, email: false });
+        setDidSearch(true);
     };
 
     const checkSource = (checkedSource) => {
@@ -92,6 +94,21 @@ export default function Search() {
     };
 
     const shouldSourceRender = (name) => sources.find((e) => e.name === name)?.checked && emails.length > 0;
+
+    const renderNoSearchResults = () => {
+        if(!shouldSourceRender("Email")
+            && !shouldSourceRender("C-drev")
+            && !shouldSourceRender("Teams")
+            && !shouldSourceRender("Skype")
+            && didSearch
+        ){
+            return (
+                <div className="font-bold mx-auto">
+                    Fandt ingen resultater, har du markeret et område at søge i? Ellers prøv at inkludere flere standard templates i din søgning.
+                </div>
+            );
+        }
+    }
 
     const renderEmailCheckBox = () => {
         if (!shouldSourceRender("Email")) {
@@ -193,6 +210,8 @@ export default function Search() {
                     </Button>
                 </div>
             </Collapsible>
+
+            {renderNoSearchResults()}
 
             {renderEmailCheckBox()}
 

@@ -3,7 +3,7 @@ export async function getSources() {
     const response = await fetch("https://jnapi.azurewebsites.net/api/sources", { headers: { "Content-Type": "application/json" } });
     // transforms html body to json object
     const sources = await response.json();
-    return sources;
+    return sources.map(s => ( {...s, checked: false} ));
 }
 
 // gets all keywords from the API
