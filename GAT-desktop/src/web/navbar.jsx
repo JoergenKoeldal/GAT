@@ -42,6 +42,21 @@ export default function Navbar() {
                 <AuthenticatedTemplate>
                     <Outlet />
                 </AuthenticatedTemplate>
+                <UnauthenticatedTemplate>
+                    <div className="w-full mt-4 flex justify-around">
+                        <div>
+                            <div className="text-3xl mb-3 font-bold">
+                                Du er ikke logget ind
+                            </div>
+                            <span className="mr-5 text-lg">
+                                Klik her for at logge ind 
+                            </span>
+                            <Button color={"green"} onClick={appContext.signIn}>
+                                Log ind
+                            </Button>
+                        </div>
+                    </div>
+                </UnauthenticatedTemplate>
             </div>
         </div>
     );
