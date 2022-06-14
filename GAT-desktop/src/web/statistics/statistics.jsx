@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDepartments } from "../apiService";
+import Spinner from "../util/spinner";
 
 export default function Statistics() {
     const [departments, setDepartments] = useState([]);
@@ -18,6 +19,8 @@ export default function Statistics() {
                 Afdelinger
             </h2>
             {
+                departments.length > 0 
+                ?
                 departments.map((d) => (
                     <div key={d.departmentId} className="my-2">
                         <h4 className="text-xl">
@@ -33,6 +36,8 @@ export default function Statistics() {
                         </a>
                     </div>
                 ))
+                :
+                <Spinner />
             }
         </div>
     );
