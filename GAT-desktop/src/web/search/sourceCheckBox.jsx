@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../util/spinner";
 
 export default function SourceCheckBox({ sources, onChange }) {
     sources = sources === undefined ? [] : sources;
@@ -12,6 +13,14 @@ export default function SourceCheckBox({ sources, onChange }) {
             </label>,
         );
     });
+
+    if(checkboxes.length === 0){
+        return (
+            <div>
+                <Spinner/>
+            </div>
+        );
+    }
 
     return (
         <div>

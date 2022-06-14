@@ -4,6 +4,7 @@ import React, {
 
 import { getKeywordLists } from "../apiService";
 import Collapsible from "../util/collapsible";
+import Spinner from "../util/spinner";
 import Tag from "../util/tag";
 
 export default function KeywordListCheckBox({ onChange }) {
@@ -52,6 +53,14 @@ export default function KeywordListCheckBox({ onChange }) {
             .forEach((l) => keywords = [...keywords, ...l.keywords]);
 
         onChange(keywords);
+    }
+
+    if(checkboxes.length === 0){
+        return(
+            <div>
+                <Spinner/>
+            </div>
+        )
     }
 
     return (
