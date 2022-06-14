@@ -33,8 +33,13 @@ export default function Search() {
         if (searchStringCustom.length > 0) {
             fullSearchString += ` ${searchStringCustom}`;
         }
-        const search = fullSearchString.split(" ").reduce((wholeSearch, currentword) => `${wholeSearch}body: ${currentword} OR subject: ${currentword} OR `, "");
-        // Tager længden af stringen og fjerner de sidste 4 characters for at undgå problemet med OR i slutningen af stringen
+        const search = fullSearchString.split(" ").reduce((wholeSearch, currentword) => { 
+            if(currentword === ""){
+                return wholeSearch;
+            }
+            return `${wholeSearch}body: ${currentword} OR subject: ${currentword} OR ` 
+        }, "");
+        // Tager længden af strengen og fjerner de sidste 4 characters for at undgå problemet med OR i slutningen af strengen
         getUserMails(appContext.user, { search: search.substring(0, search.length - 4) })
             .then((res) => {
                 setEmails(res.value);
